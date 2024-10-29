@@ -1,6 +1,7 @@
 package puppy.code;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -20,7 +21,7 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	private ShapeRenderer shape;
 	private PingBall ball;
 	private Paddle pad;
-	private ArrayList<Block> blocks = new ArrayList<>();
+	private ArrayList<BlockDefinitive> blocks = new ArrayList<>();
 	private int vidas;
 	private int puntaje;
 	private int nivel;
@@ -42,14 +43,22 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    puntaje = 0;
 		}
 		public void crearBloques(int filas) {
-			blocks.clear();
-			int blockWidth = 70;
+		    blocks.clear();
+		    int blockWidth = 70;
 		    int blockHeight = 26;
 		    int y = Gdx.graphics.getHeight();
-		    for (int cont = 0; cont<filas; cont++ ) {
-		    	y -= blockHeight+10;
-		    	for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
-		            blocks.add(new Block(x, y, blockWidth, blockHeight));
+		    Random random = new Random();
+		    
+		    for (int cont = 0; cont < filas; cont++) {
+		        y -= blockHeight + 10;
+		        for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
+		            BlockDefinitive block;
+		            if (random.nextBoolean()) { // Decide aleatoriamente entre GoodBlock y BadBlock
+		                block = new GoodBlock(x, y, blockWidth, blockHeight);
+		            } else {
+		                block = new BadBlock(x, y, blockWidth, blockHeight);
+		            }
+		            blocks.add(block);
 		        }
 		    }
 		}
@@ -96,17 +105,18 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
 	        }
 	        //dibujar bloques
-	        for (Block b : blocks) {
+	        for (BlockDefinitive b : blocks) {
 	            b.draw(shape);
 	            ball.checkCollision(b);
 	        }
 	        // actualizar estado de los bloques
 	        for (int i = 0; i < blocks.size(); i++) {
-	            Block b = blocks.get(i);
+	            BlockDefinitive b = blocks.get(i);
 	            if (b.destroyed) {
-	            	puntaje++;
+	                puntaje++;
+	                b.applyEfect();  // Aplica el efecto del bloque
 	                blocks.remove(b);
-	                i--; //para no saltarse 1 tras eliminar del arraylist
+	                i--;  // Ajusta el índice después de eliminar
 	            }
 	        }
 
