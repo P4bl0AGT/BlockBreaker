@@ -1,7 +1,8 @@
 package puppy.code;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 public interface Andante {
-	public void mover();
-	public void dibujar();
+	public void dibujar(ShapeRenderer shape);
 	public void actualizar();
 }
