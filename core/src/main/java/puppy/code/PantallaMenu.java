@@ -40,10 +40,11 @@ public class PantallaMenu implements Screen {
         game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
 
         game.getFont().draw(game.getBatch(), "Teclas", 140, 500);
-        game.getFont().draw(game.getBatch(), "[<-] Mover Izquierda", 180, 450);
-        game.getFont().draw(game.getBatch(), "[->] Mover Derecha", 180, 400);
+        game.getFont().draw(game.getBatch(), "[<-] ó [A] Mover Izquierda", 180, 450);
+        game.getFont().draw(game.getBatch(), "[->] ó [D] Mover Derecha", 180, 400);
         game.getFont().draw(game.getBatch(), "[ESPACIO] Lanzar pelota", 180, 350);
-
+        game.getFont().draw(game.getBatch(), "[ESC] Poner Pausa", 180, 300);
+        
         game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
 
         game.getBatch().end();
