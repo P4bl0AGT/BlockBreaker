@@ -12,7 +12,7 @@ public class BadBlock extends BlockDefinitive{
 	public void applyEfect() {
         if(destroyed == true) {
         	System.out.println("BLOQUE MALO");
-        	// IMPLEMENTAR NERF
+        	// IMPLEMENTAR NERFeo
         }
 	}
 
