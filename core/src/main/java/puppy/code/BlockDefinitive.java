@@ -10,6 +10,7 @@ public abstract class BlockDefinitive {
 	  Color cc;
 	  boolean destroyed;
 	  int resistance;
+	  protected int currentResistance ;
 	  
 	  public BlockDefinitive(int x, int y, int width, int height, int resistance) {
 	        this.x = x;
@@ -18,6 +19,7 @@ public abstract class BlockDefinitive {
 	        this.height = height;
 	        destroyed = false;
 	        this.resistance = resistance; 
+	        this.currentResistance = resistance;
 	        Random r = new Random(x+y);
 	        cc = new Color(0.1f+r.nextFloat(1), r.nextFloat(1), r.nextFloat(1), 10);
 	  
@@ -28,17 +30,17 @@ public abstract class BlockDefinitive {
 	        shape.rect(x, y, width, height);
 	    }
 	  	
+	    public void takeHit() {
+	        if (currentResistance > 0) {
+	        	currentResistance--;
+	            }
+	        }
+
+	      
+	    public boolean itsDestroyed() {
+	          	return currentResistance <= 0;
+	        }
 	    
-	    public void hit()
-	    {
-	    	if (resistance > 0 ) {
-	    		resistance-- ;
-	
-	    		if (resistance == 0) {
-	    			destroyed = true;
-	    		}	
-	    	}
-	    }
 	    
 	    public abstract void applyEfect();
 }

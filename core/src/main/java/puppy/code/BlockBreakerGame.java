@@ -42,26 +42,34 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    vidas = 3;
 		    puntaje = 0;
 		}
-		public void crearBloques(int filas) {
-		    blocks.clear();
-		    int blockWidth = 70;
-		    int blockHeight = 26;
-		    int y = Gdx.graphics.getHeight();
+		public void crearBloques(int filas) { 
+		    blocks.clear(); 
+		    int blockWidth = 70; 
+		    int blockHeight = 26; 
+		    int y = Gdx.graphics.getHeight(); 
 		    Random random = new Random();
-		    
-		    for (int cont = 0; cont < filas; cont++) {
-		        y -= blockHeight + 10;
-		        for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
+
+		    for (int cont = 0; cont < filas; cont++) { 
+		        y -= blockHeight + 10; 
+		        for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) { 
 		            BlockDefinitive block;
-		            if (random.nextBoolean()) { // Decide aleatoriamente entre GoodBlock y BadBlock
-		                block = new GoodBlock(x, y, blockWidth, blockHeight);
-		            } else {
-		                block = new BadBlock(x, y, blockWidth, blockHeight);
+		            int blockType = random.nextInt(3); // Genera un número aleatorio entre 0 y 2
+		            
+		            if (blockType == 0) { 
+		                block = new GoodBlock(x, y, blockWidth, blockHeight); 
+		            } else if (blockType == 1) { 
+		                block = new BadBlock(x, y, blockWidth, blockHeight); 
+		            } else { 
+		                block = new NormalBlock(x, y, blockWidth, blockHeight); 
 		            }
-		            blocks.add(block);
-		        }
-		    }
+		            
+		            blocks.add(block); 
+		        } 
+		    } 
 		}
+
+
+
 		public void dibujaTextos() {
 			//actualizar matrices de la cámara
 			camera.update();

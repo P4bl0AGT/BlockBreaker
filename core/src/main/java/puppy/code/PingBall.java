@@ -113,9 +113,15 @@ public class PingBall implements Andante {
     public void checkCollision(BlockDefinitive block) {
         if (collidesWith(block)) {
             ySpeed = -ySpeed;
-            block.destroyed = true;
+            block.takeHit(); 
+
+            
+            if (block.itsDestroyed()) {
+                block.destroyed = true;
+            }
         }
     }
+
 
     private boolean collidesWith(BlockDefinitive bb) {
         boolean intersectaX = (bb.x + bb.width >= x - size) && (bb.x <= x + size);
