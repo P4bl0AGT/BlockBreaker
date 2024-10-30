@@ -32,7 +32,8 @@ public class PantallaJuego implements Screen {
     private int vidas;
     private int puntaje;
     private int nivel;
-    private int puntajeMax;
+
+    private boolean pausa = false;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -52,8 +53,8 @@ public class PantallaJuego implements Screen {
         crearBloques(2 + nivel);
 
         shape = new ShapeRenderer();
-        ball = new PingBall(Gdx.graphics.getWidth() / 2 - 10, 41, 10, 5, 7, true);
-        pad = new Paddle(Gdx.graphics.getWidth() / 2 - 50, 40, 100, 10);
+        ball = new PingBall(Gdx.graphics.getWidth() / 2 - 10, 41, 15, 5, 7, true);
+        pad = new Paddle(Gdx.graphics.getWidth() / 2 - 50, 40, 150, 12);
     }
 
 
@@ -64,13 +65,15 @@ public class PantallaJuego implements Screen {
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     public void crearBloques(int filas) {
         blocks.clear();
-        int blockWidth = 70;
-        int blockHeight = 26;
+        int blockWidth = 140; //70
+        int blockHeight = 40; //26
         int y = Gdx.graphics.getHeight();
         Random random = new Random();
 
         for (int cont = 0; cont < filas; cont++) {
+            //separacion y entre bloques
             y -= blockHeight + 10;
+            //separacion x entre bloques
             for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
                 BlockDefinitive block;
                 int blockType = random.nextInt(3); // Genera un número aleatorio entre 0 y 2
@@ -107,36 +110,52 @@ public class PantallaJuego implements Screen {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shape.begin(ShapeRenderer.ShapeType.Filled);
         pad.draw(shape);
+
         // monitorear inicio del juego
         if (ball.estaQuieto()) {
-        	ball.setXY(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11);
-        	if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) ball.setEstaQuieto(false);
-        }else ball.actualizar();
+        	ball.setXY(pad.getX()+pad.getWidth()/2+8, pad.getY()+pad.getHeight()+13);
+        	if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+                ball.setEstaQuieto(false);
+        }else
+            ball.actualizar();
+
+        //Monitorear pausa
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Screen aa = new PantallaPausa(game, this);
+            game.setScreen(aa);
+        }
+
+
         //verificar si se fue la bola x abajo
         if (ball.getY()<0) {
         	vidas--;
         	//nivel = 1;
-        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
+        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 15, 5, 7, true);
         }
+
         // verificar game over
-        if (vidas<=0) {
-        	vidas = 3;
-        	nivel = 1;
-            puntaje = 0;
-        	crearBloques(2+nivel);
-        	//ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
+        if (vidas <= 0) {
+            if (puntaje > game.getHighScore())
+                game.setHighScore(puntaje);
+            Screen ss = new PantallaGameOver(game);
+            ss.resize(1200, 800);
+            game.setScreen(ss);
+            dispose();
         }
+
         // verificar si el nivel se terminó
-        if (blocks.size()==0) {
-        	nivel++;
-        	crearBloques(2+nivel);
-        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
+        if (blocks.isEmpty()) {
+            Screen aa = new PantallaNivelSuperado(game, nivel, puntaje, vidas);
+            game.setScreen(aa);
+            dispose();
         }
+
         //dibujar bloques
         for (BlockDefinitive b : blocks) {
             b.draw(shape);
             ball.checkCollision(b);
         }
+
         // actualizar estado de los bloques
         for (int i = 0; i < blocks.size(); i++) {
             BlockDefinitive b = blocks.get(i);

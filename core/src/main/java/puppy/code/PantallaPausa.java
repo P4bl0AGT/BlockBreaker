@@ -3,20 +3,27 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class PantallaMenu implements Screen {
+public class PantallaPausa implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreaker game;
     private OrthographicCamera camera;
+    private PantallaJuego pantalla;
+    private final String[] strOpciones = {"Volver", "Menu Principal"};
+    private int opcion = 0;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaMenu(BlockBreaker game) {
+    public PantallaPausa(BlockBreaker game, PantallaJuego pantalla) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
+        this.pantalla = pantalla;
     }
 
 
@@ -27,32 +34,46 @@ public class PantallaMenu implements Screen {
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
 
+    public PantallaJuego getPantalla() {return pantalla;}
+    public void setPantalla(PantallaJuego pantalla) {this.pantalla = pantalla;}
+
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
-
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
+        game.getFont().draw(game.getBatch(), "Pausa !!! ", 140, 700, 400, 1, true);
 
-        game.getFont().draw(game.getBatch(), "Teclas", 140, 500);
-        game.getFont().draw(game.getBatch(), "[<-] Mover Izquierda", 180, 450);
-        game.getFont().draw(game.getBatch(), "[->] Mover Derecha", 180, 400);
-        game.getFont().draw(game.getBatch(), "[ESPACIO] Lanzar pelota", 180, 350);
-
-        game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
-
+        for (int i = 0; i < strOpciones.length; i++) {
+            if (i == opcion) {
+                game.getFont().setColor(Color.GOLD);
+                game.getFont().draw(game.getBatch(), "> " + strOpciones[i], 160, 400 - i * 50);
+            } else {
+                game.getFont().setColor(Color.WHITE);
+                game.getFont().draw(game.getBatch(), "  " + strOpciones[i], 160, 400 - i * 50);
+            }
+        }
+        game.getFont().setColor(Color.WHITE);
         game.getBatch().end();
 
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game, 1, 0, 3);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
+        //Mover arriba abajo
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            opcion = (opcion == 0) ? 1: 0;
+        }
+
+        //Seleccionar opciones
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if (opcion == 0) { //volver
+                game.setScreen(pantalla);
+                dispose();
+            } else if (opcion == 1) { //menu
+                game.setScreen(new PantallaMenu(game));
+                dispose();
+            }
         }
     }
 
@@ -85,7 +106,4 @@ public class PantallaMenu implements Screen {
     public void dispose() {
         // TODO Auto-generated method stub
     }
-
 }
-
-

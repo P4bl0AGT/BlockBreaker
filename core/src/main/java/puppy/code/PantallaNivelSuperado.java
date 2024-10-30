@@ -6,17 +6,24 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class PantallaMenu implements Screen {
+public class PantallaNivelSuperado implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreaker game;
     private OrthographicCamera camera;
+    private PantallaJuego pantalla;
+    private int nivel;
+    private int puntaje;
+    private int vidas;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaMenu(BlockBreaker game) {
+    public PantallaNivelSuperado(BlockBreaker game, int nivel, int puntaje, int vidas) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
+        this.nivel = nivel;
+        this.puntaje = puntaje;
+        this.vidas = vidas;
     }
 
 
@@ -28,6 +35,7 @@ public class PantallaMenu implements Screen {
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
 
 
+
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     @Override
     public void render(float delta) {
@@ -37,24 +45,18 @@ public class PantallaMenu implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
-
-        game.getFont().draw(game.getBatch(), "Teclas", 140, 500);
-        game.getFont().draw(game.getBatch(), "[<-] Mover Izquierda", 180, 450);
-        game.getFont().draw(game.getBatch(), "[->] Mover Derecha", 180, 400);
-        game.getFont().draw(game.getBatch(), "[ESPACIO] Lanzar pelota", 180, 350);
-
-        game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
-
+        game.getFont().draw(game.getBatch(), "Nivel Superado !!! ", 140, 600, 400, 1, true);
+        game.getFont().draw(game.getBatch(), "Presiona ENTER para continuar ...", 140, 400);
         game.getBatch().end();
 
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game, 1, 0, 3);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            Screen ss = new PantallaJuego(game, nivel + 1, puntaje, vidas);
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
         }
     }
+
 
     @Override
     public void show() {
@@ -87,5 +89,3 @@ public class PantallaMenu implements Screen {
     }
 
 }
-
-
