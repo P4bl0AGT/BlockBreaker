@@ -4,6 +4,8 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class PingBall implements Andante {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
@@ -14,6 +16,8 @@ public class PingBall implements Andante {
     private int ySpeed;
     private Color color = Color.WHITE;
     private boolean estaQuieto;
+    private Sound boing;
+    private Sound breaking;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -24,6 +28,8 @@ public class PingBall implements Andante {
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         estaQuieto = iniciaQuieto;
+        boing = Gdx.audio.newSound(Gdx.files.internal("Boing.mp3"));
+        breaking = Gdx.audio.newSound(Gdx.files.internal("Break.mp3"));
     }
 
 
@@ -96,9 +102,15 @@ public class PingBall implements Andante {
     }
 
     public void checkCollision(Paddle paddle) {
-        if (collidesWith(paddle)) {
+        if (collidesWith(paddle) && estaQuieto) {
+        	ySpeed = -ySpeed;
             color = Color.GREEN;
-            ySpeed = -ySpeed;
+            
+        }
+        else if (collidesWith(paddle) && !estaQuieto) {
+        	ySpeed = -ySpeed;
+        	boing.play();
+        	color = Color.GREEN;
         } else {
             color = Color.WHITE;
         }
@@ -117,7 +129,9 @@ public class PingBall implements Andante {
 
             
             if (block.itsDestroyed()) {
+            	breaking.play();
                 block.destroyed = true;
+                
             }
         }
     }

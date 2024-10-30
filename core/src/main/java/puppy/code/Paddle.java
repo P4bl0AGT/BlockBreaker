@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Paddle {
+public class Paddle implements Andante{
     private int x = 20;
     private int y = 20;
     private int width = 100;
@@ -22,12 +22,13 @@ public class Paddle {
 	public int getY() {return y;}
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
+	public void actualizar() {};
 	
 	public void setWidth(int newWhidth) {
 		this.width = newWhidth;
 	}
 
-	public void draw(ShapeRenderer shape){
+	public void dibujar(ShapeRenderer shape){
         shape.setColor(Color.BLUE);
         int x2 = x; //= Gdx.input.getX();
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A) ) x2 =x-15;

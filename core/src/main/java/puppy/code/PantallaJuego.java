@@ -34,7 +34,7 @@ public class PantallaJuego implements Screen {
     private int nivel;
 
     private boolean pausa = false;
-
+ 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public PantallaJuego(BlockBreaker game, int nivel, int puntaje, int vidas) {
@@ -50,12 +50,12 @@ public class PantallaJuego implements Screen {
         //font = new BitmapFont();
         font = game.getFont();
         font.getData().setScale(2, 2);
-        crearBloques(2 + nivel);
+        crearBloques(2 + nivel); 
 
         shape = new ShapeRenderer();
         ball = new PingBall(Gdx.graphics.getWidth() / 2 - 10, 41, 15, 5, 7, true);
         pad = new Paddle(Gdx.graphics.getWidth() / 2 - 50, 40, 150, 12);
-    }
+    } 
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
@@ -109,11 +109,13 @@ public class PantallaJuego implements Screen {
     public void render(float delta) {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        pad.draw(shape);
+        pad.dibujar(shape);
+        
+        ball.checkCollision(pad);
 
         // monitorear inicio del juego
         if (ball.estaQuieto()) {
-        	ball.setXY(pad.getX()+pad.getWidth()/2+8, pad.getY()+pad.getHeight()+13);
+        	ball.setXY(pad.getX()+pad.getWidth()/2+8, pad.getY()+pad.getHeight()+16);
         	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 ball.setEstaQuieto(false);
         }else
@@ -167,7 +169,7 @@ public class PantallaJuego implements Screen {
             }
         }
 
-        ball.checkCollision(pad);
+        
         ball.dibujar(shape);
 
         shape.end();
