@@ -114,7 +114,7 @@ public class PantallaJuego implements Screen {
         // monitorear inicio del juego
         if (ball.estaQuieto()) {
         	ball.setXY(pad.getX()+pad.getWidth()/2+8, pad.getY()+pad.getHeight()+13);
-        	if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                 ball.setEstaQuieto(false);
         }else
             ball.actualizar();
