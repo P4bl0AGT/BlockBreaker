@@ -42,6 +42,6 @@ public abstract class BlockDefinitive {
 	        }
 	    
 	    
-	    public abstract void applyEfect();
+	    public abstract void applyEfect(Paddle paddle, PingBall ball);
 }
 

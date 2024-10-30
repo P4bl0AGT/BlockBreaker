@@ -9,7 +9,7 @@ public class BadBlock extends BlockDefinitive{
 	}
 
 	@Override
-	public void applyEfect() {
+	public void applyEfect(Paddle paddle , PingBall ball) {
         if(destroyed == true) {
         	System.out.println("BLOQUE MALO");
         	// IMPLEMENTAR NERFeo

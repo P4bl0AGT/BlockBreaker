@@ -104,59 +104,47 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shape.begin(ShapeRenderer.ShapeType.Filled);
         pad.draw(shape);
         // monitorear inicio del juego
         if (ball.estaQuieto()) {
-            ball.setXY(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11);
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) ball.setEstaQuieto(false);
-        } else ball.actualizar();
+        	ball.setXY(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11);
+        	if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) ball.setEstaQuieto(false);
+        }else ball.actualizar();
         //verificar si se fue la bola x abajo
-        if (ball.getY() < 0) {
-            vidas--;
-            //nivel = 1;
-            ball = new PingBall(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11, 10, 5, 7, true);
+        if (ball.getY()<0) {
+        	vidas--;
+        	//nivel = 1;
+        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
         }
-
         // verificar game over
-        if (vidas <= 0) {
-            if (puntaje > game.getHighScore())
-                game.setHighScore(puntaje);
-            Screen ss = new PantallaGameOver(game);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
+        if (vidas<=0) {
+        	vidas = 3;
+        	nivel = 1;
+            puntaje = 0;
+        	crearBloques(2+nivel);
+        	//ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
         }
-
-        /*
         // verificar si el nivel se terminó
-        if (blocks.size() == 0) {
-            nivel++;
-            crearBloques(2 + nivel);
-            ball = new PingBall(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11, 10, 5, 7, true);
-        }*/
-        // verificar si el nivel se terminó
-        if (blocks.size() == 0) {
-            Screen ss = new PantallaJuego(game, nivel + 1, puntaje, vidas);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
+        if (blocks.size()==0) {
+        	nivel++;
+        	crearBloques(2+nivel);
+        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 10, 5, 7, true);
         }
-
         //dibujar bloques
         for (BlockDefinitive b : blocks) {
             b.draw(shape);
             ball.checkCollision(b);
         }
-
         // actualizar estado de los bloques
         for (int i = 0; i < blocks.size(); i++) {
             BlockDefinitive b = blocks.get(i);
             if (b.destroyed) {
                 puntaje++;
+                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
                 blocks.remove(b);
-                i--; //para no saltarse 1 tras eliminar del arraylist
+                i--;  // Ajusta el índice después de eliminar
             }
         }
 

@@ -8,7 +8,7 @@ public class NormalBlock extends BlockDefinitive{
 		}
 
 		@Override
-		public void applyEfect() {
+		public void applyEfect(Paddle paddle, PingBall ball) {
 	        if(destroyed == true) {
 	        	System.out.println("BLOQUE NORMAL");	
 	        }
