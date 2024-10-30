@@ -15,6 +15,9 @@ public class BadBlock extends BlockDefinitive{
         	// IMPLEMENTAR NERFeo
         }
 	}
+	protected void resetEffects(Paddle paddle , PingBall ball) {
+		return;
+	}
 
 }
 

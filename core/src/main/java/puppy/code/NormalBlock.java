@@ -13,5 +13,10 @@ public class NormalBlock extends BlockDefinitive{
 	        	System.out.println("BLOQUE NORMAL");	
 	        }
 		}
+		
+		protected void resetEffects(Paddle paddle , PingBall ball) {
+			return;
+		}
+		
 	}
 

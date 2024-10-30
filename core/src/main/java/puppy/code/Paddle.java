@@ -22,8 +22,9 @@ public class Paddle {
 	public int getY() {return y;}
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
-	public void setWidth(int newWidth) {
-		this.width = newWidth;
+	
+	public void setWidth(int newWhidth) {
+		this.width = newWhidth;
 	}
 
 	public void draw(ShapeRenderer shape){
