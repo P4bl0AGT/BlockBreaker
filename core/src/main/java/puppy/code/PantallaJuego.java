@@ -37,6 +37,8 @@ public class PantallaJuego implements Screen {
     
     private int contBall = 0 ;
     private int contPad = 0 ;
+    
+    private GameLogic gameLogic;
  
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -45,6 +47,7 @@ public class PantallaJuego implements Screen {
         this.nivel = nivel;
         this.puntaje = puntaje;
         this.vidas = vidas; //Hay que cambiarlo al paddle ¿?
+        gameLogic = new GameLogic(this);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
@@ -62,7 +65,18 @@ public class PantallaJuego implements Screen {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
+    public PingBall getBall(){return ball;}
+    public Paddle getPad() {return pad;}
+    public BlockBreaker getGame() {return game;}
+    public int getVidas() {return vidas;}
+    public int getPuntaje() {return puntaje;}
+    public int getNivel() {return nivel;}
 
+    public ShapeRenderer getShape() {return shape;}
+    
+    public void setVidas(int vidas) {this.vidas = vidas;}
+    public void setBall(PingBall ball) {this.ball = ball;}
+    public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
@@ -116,67 +130,33 @@ public class PantallaJuego implements Screen {
         
         ball.checkCollision(pad);
 
+        //encapsulamiento el mas facil ese del this xD //
+        
         // monitorear inicio del juego
-        if (ball.estaQuieto()) {
-        	ball.setXY(pad.getX()+pad.getWidth()/2+8, pad.getY()+pad.getHeight()+16);
-        	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-                ball.setEstaQuieto(false);
-        }else
-            ball.actualizar();
+        gameLogic.monitorStartup();
 
         //Monitorear pausa
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Screen aa = new PantallaPausa(game, this);
-            game.setScreen(aa);
-        }
-
+        gameLogic.monitorPausee();
 
         //verificar si se fue la bola x abajo
-        if (ball.getY()<0) {
-        	vidas--;
-        	//nivel = 1;
-        	ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 15, 5, 7, true);
-        }
+        gameLogic.underPlataform();
 
         // verificar game over
-        if (vidas <= 0) {
-            if (puntaje > game.getHighScore())
-                game.setHighScore(puntaje);
-            Screen ss = new PantallaGameOver(game);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
-        }
+        gameLogic.verifyGameOver();
 
         // verificar si el nivel se terminó
-        if (blocks.isEmpty()) {
-            Screen aa = new PantallaNivelSuperado(game, nivel, puntaje, vidas);
-            game.setScreen(aa);
-            dispose();
-        }
+        if (blocks.isEmpty())
+        	gameLogic.levelComplete();
 
         //dibujar bloques
         for (BlockDefinitive b : blocks) {
-            b.draw(shape);
-            ball.checkCollision(b);
+        	gameLogic.createBlock(b);
         }
 
         // actualizar estado de los bloques
         for (int i = 0; i < blocks.size(); i++) {
-            BlockDefinitive b = blocks.get(i);
-            if (b.destroyed) {
-                puntaje++;
-                if (!ball.getHasEffect())
-                {
-	                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
-                }
-          
-                if (!pad.getHasEffect())
-                {
-	                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
-                }
-
-                blocks.remove(b);
+            if (gameLogic.checkBlock(blocks.get(i))) {
+            	blocks.remove(blocks.get(i));
                 i--;  // Ajusta el índice después de eliminar
             }
             
