@@ -132,10 +132,10 @@ public class PantallaJuego implements Screen {
         font.draw(batch, "HighScore : " + game.getHighScore(), 610, 25);
 
         font.setColor((contPad != 0) ? Color.LIME: Color.WHITE);
-        font.draw(batch, "TimeB : " + (10 - contPad / 60), 850, 25);
+        font.draw(batch, "TimeP : " + (10 - contPad / 60), 850, 25);
 
         font.setColor((contBall != 0) ? Color.LIME: Color.WHITE);
-        font.draw(batch, "TimeP : " + (10 - contBall / 60), 1050, 25);
+        font.draw(batch, "TimeB : " + (10 - contBall / 60), 1050, 25);
 
         font.setColor(Color.WHITE);
         batch.end();

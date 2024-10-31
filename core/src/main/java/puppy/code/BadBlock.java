@@ -28,7 +28,7 @@ public class BadBlock extends BlockDefinitive {
         ball.setxSpeed(ball.getxSpeed() * 2);
         ball.setySpeed(ball.getySpeed() * 2);
         ball.setHasEffect(true);
-        ball.setEffectSlowDownBall(true);
+        ball.setEffectFastDownBall(true);
 
     }
 
