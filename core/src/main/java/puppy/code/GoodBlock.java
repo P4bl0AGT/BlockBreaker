@@ -3,10 +3,7 @@ package puppy.code;
 import java.util.Random;
 
 public class GoodBlock extends BlockDefinitive {
-	private float effectDuration = 0;
-	private boolean isPaddleSizeIncrease = false;
-	private boolean isBallSizeIncrease = false;
-	private boolean isSlowDownBall = false;
+
 	/*private boolean isMultiBalls = false;*/
     public GoodBlock(int x, int y, int width, int height) {
         // Genera una resistencia aleatoria entre 2 y 5 para un bloque bueno
@@ -15,46 +12,27 @@ public class GoodBlock extends BlockDefinitive {
 
 
     public void paddleSizeIncrease(Paddle paddle) {
-    	int copySize = paddle.getWidth();
-        if(isPaddleSizeIncrease == false) {
-	    	if (effectDuration <= 0) {  
-	            effectDuration = 3f;  
-	            paddle.setWidth(paddle.getWidth() * 2);  
-	            isPaddleSizeIncrease = true;
-	        }
-	    	if (effectDuration > 3f) {
-	    		effectDuration = 0;
-	    		paddle.setWidth(copySize);
-	    	}
-        }
+    	
+    	paddle.setWidth(paddle.getWidth() * 2);  
+        paddle.setHasEffect(true);
+        paddle.setEffectSizeIncrease(true);
+	   
     }
-    
+     
     public void ballSizeIncrease(PingBall ball) {
-    	int copySize = ball.getSize();
-    	if (isBallSizeIncrease == false) {
-	    	if (effectDuration <= 0) {
-	    		effectDuration = 3f;
-	    		ball.setSize(ball.getSize() * 2);
-	    		isBallSizeIncrease = true;
-	    	}
-	    	if(effectDuration > 3f) {
-	    		effectDuration = 0;
-	    		ball.setSize(copySize);
-	    		isBallSizeIncrease = false;
-	    	}
-    	}
-    }
+    	
+		ball.setSize(ball.getSize() * 2);
+		ball.setHasEffect(true);
+		ball.setEffectSizeIncrease(true);
+
+	}
     
    public void slowDownBall(PingBall ball){
-    	if(isSlowDownBall == false) {
-	    	if (effectDuration <= 0) {
-	    		effectDuration = 5f;
-	    		ball.setxSpeed(ball.getxSpeed() / 2);
-	    		ball.setySpeed(ball.getySpeed() / 2);
-	    		isBallSizeIncrease = true;
-	    	}
-    	}
-    	
+	    ball.setxSpeed(ball.getxSpeed() / 2);
+	    ball.setySpeed(ball.getySpeed() / 2);
+	    ball.setHasEffect(true);
+	    ball.setEffectSlowDownBall(true);
+	 
     }
     
    /* public void multiBalls() {*/
@@ -68,14 +46,19 @@ public class GoodBlock extends BlockDefinitive {
 			
 			switch(eleccion){
 			
-			//case 0: paddleSizeIncrease(paddle);
+			case 0: 
+				if(!paddle.getEffectSizeIncrease())
+					paddleSizeIncrease(paddle);
+				break;
 			case 1:{
-				ballSizeIncrease(ball);
+				if(!ball.getEffectSizeIncrease())
+					ballSizeIncrease(ball);
 				break;
 			}
 					
 			case 2:{
-				slowDownBall(ball);
+				if(!ball.getEffectSlowDownBall())
+					slowDownBall(ball);
 				break;
 			}
 

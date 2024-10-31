@@ -34,6 +34,9 @@ public class PantallaJuego implements Screen {
     private int nivel;
 
     private boolean pausa = false;
+    
+    private int contBall = 0 ;
+    private int contPad = 0 ;
  
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -163,12 +166,58 @@ public class PantallaJuego implements Screen {
             BlockDefinitive b = blocks.get(i);
             if (b.destroyed) {
                 puntaje++;
-                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
+                if (!ball.getHasEffect())
+                {
+	                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
+                }
+          
+                if (!pad.getHasEffect())
+                {
+	                b.applyEfect(pad, ball);  // Aplica el efecto del bloque
+                }
+
                 blocks.remove(b);
                 i--;  // Ajusta el índice después de eliminar
             }
+            
+        }	
+        
+        
+        if (ball.getHasEffect()) {
+        	contBall++;
+        	System.out.println(contBall / 60);
+        	if ((contBall / 60) >= 10) {
+        		if (ball.getEffectSlowDownBall()) {
+        			ball.setxSpeed(ball.getxSpeed() * 2);
+        		    ball.setySpeed(ball.getySpeed() * 2);
+            		ball.setHasEffect(false);
+            		ball.setEffectSlowDownBall(false);
+        		}
+        		if(ball.getEffectSizeIncrease()) {
+        			ball.setSize(15);
+            		ball.setHasEffect(false);
+            		ball.setEffectSizeIncrease(false);
+        		}
+        		
+        		contBall = 0;
+        		
+        	}
         }
-
+        
+        if (pad.getHasEffect()) {
+        	contPad++;
+        	System.out.println(contPad / 60);
+        	if ((contPad / 60) >= 10) {
+        		if (pad.getEffectSizeIncrease()) {
+        			pad.setWidth(pad.getWidth() / 2); 
+            		pad.setHasEffect(false);
+            		pad.setEffectSizeIncrease(false);
+   
+        		}
+        		contPad = 0;
+        	}
+        }
+        
         
         ball.dibujar(shape);
 

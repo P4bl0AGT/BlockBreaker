@@ -10,6 +10,8 @@ public class Paddle implements Sprite{
     private int y = 20;
     private int width = 100;
     private int height = 10;
+    private boolean hasEffect = false;
+    private boolean effectSizeIncrease = false;
     
     public Paddle(int x, int y, int ancho, int alto) {
     	this.x = x;
@@ -27,6 +29,28 @@ public class Paddle implements Sprite{
 	public void setWidth(int newWhidth) {
 		this.width = newWhidth;
 	}
+	
+	public void setHeight(int newHeight) {
+		
+		this.height = newHeight;
+		
+	}
+	
+    public boolean getHasEffect() {
+    	return hasEffect;
+    }
+    
+    public void setHasEffect(boolean hasEffect) {
+    	this.hasEffect = hasEffect;
+    }
+
+    public boolean getEffectSizeIncrease() {
+    	return effectSizeIncrease;
+    }
+    
+    public void setEffectSizeIncrease(boolean effectSizeIncrease) {
+    	this.effectSizeIncrease = effectSizeIncrease;
+    }
 
 	public void dibujar(ShapeRenderer shape){
         shape.setColor(Color.BLUE);

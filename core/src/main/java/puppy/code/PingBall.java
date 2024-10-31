@@ -18,6 +18,9 @@ public class PingBall implements Sprite {
     private boolean estaQuieto;
     private Sound boing;
     private Sound breaking;
+    private boolean hasEffect = false;
+    private boolean effectSizeIncrease = false;
+    private boolean effectSlowDownBall = false;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -49,6 +52,31 @@ public class PingBall implements Sprite {
     public int getSize() {
         return size;
     }
+    
+    public boolean getHasEffect() {
+    	return hasEffect;
+    }
+    
+    public void setHasEffect(boolean hasEffect) {
+    	this.hasEffect = hasEffect;
+    }
+    
+    public boolean getEffectSizeIncrease() {
+    	return effectSizeIncrease;
+    }
+    
+    public void setEffectSizeIncrease(boolean effectSizeIncrease) {
+    	this.effectSizeIncrease = effectSizeIncrease;
+    }
+    
+    public boolean getEffectSlowDownBall() {
+    	return effectSlowDownBall;
+    }
+    
+    public void setEffectSlowDownBall(boolean effectSlowDownBall) {
+    	this.effectSlowDownBall = effectSlowDownBall;
+    }
+    
     public void setSize(int size) {
         this.size = size;
     }
