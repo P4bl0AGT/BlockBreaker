@@ -198,6 +198,17 @@ public class PantallaJuego implements Screen {
             		ball.setHasEffect(false);
             		ball.setEffectSizeIncrease(false);
         		}
+         		if (ball.getEffectFastDownBall()) {
+        			ball.setxSpeed(ball.getxSpeed() / 2);
+        		    ball.setySpeed(ball.getySpeed() / 2);
+            		ball.setHasEffect(false);
+            		ball.setEffectFastDownBall(false);
+        		}
+        		if(ball.getEffectSizeDecreases()) {
+        			ball.setSize(15);
+            		ball.setHasEffect(false);
+            		ball.setEffectSizeDecreases(false);
+        		}
         		
         		contBall = 0;
         		
@@ -213,6 +224,12 @@ public class PantallaJuego implements Screen {
             		pad.setHasEffect(false);
             		pad.setEffectSizeIncrease(false);
    
+        		}
+        		
+        		if(pad.getEffectSizeDecreases()) {
+        			pad.setWidth(pad.getWidth() * 2);
+        			pad.setHasEffect(false);
+            		pad.setEffectSizeDecreases(false);
         		}
         		contPad = 0;
         	}

@@ -12,7 +12,8 @@ public class Paddle implements Sprite{
     private int height = 10;
     private boolean hasEffect = false;
     private boolean effectSizeIncrease = false;
-    
+    private boolean effectSizeDecreases = false;
+   
     public Paddle(int x, int y, int ancho, int alto) {
     	this.x = x;
     	this.y= y;
@@ -50,6 +51,14 @@ public class Paddle implements Sprite{
     
     public void setEffectSizeIncrease(boolean effectSizeIncrease) {
     	this.effectSizeIncrease = effectSizeIncrease;
+    }
+    
+    public boolean getEffectSizeDecreases() {
+    	return effectSizeDecreases;
+    }
+    
+    public void setEffectSizeDecreases(boolean effectSizeDecreases) {
+    	this.effectSizeDecreases = effectSizeDecreases;
     }
 
 	public void dibujar(ShapeRenderer shape){
