@@ -93,6 +93,61 @@ public class GameLogic {
         }
         return false;
     }
+    
+    public void verifyBallEffect() {
+        if (p.getBall().getHasEffect()) {
+        	p.setContBall(p.getContBall()+1);
+        	System.out.println(p.getContBall() / 60);
+        	if ((p.getContBall() / 60) >= 10) {
+        		if (p.getBall().getEffectSlowDownBall()) {
+        			p.getBall().setxSpeed(p.getBall().getxSpeed() * 2);
+        			p.getBall().setySpeed(p.getBall().getySpeed() * 2);
+        			p.getBall().setHasEffect(false);
+        			p.getBall().setEffectSlowDownBall(false);
+        		}
+        		if(p.getBall().getEffectSizeIncrease()) {
+        			p.getBall().setSize(15);
+        			p.getBall().setHasEffect(false);
+        			p.getBall().setEffectSizeIncrease(false);
+        		}
+         		if (p.getBall().getEffectFastDownBall()) {
+         			p.getBall().setxSpeed(p.getBall().getxSpeed() / 2);
+         			p.getBall().setySpeed(p.getBall().getySpeed() / 2);
+         			p.getBall().setHasEffect(false);
+         			p.getBall().setEffectFastDownBall(false);
+        		}
+        		if(p.getBall().getEffectSizeDecreases()) {
+        			p.getBall().setSize(15);
+        			p.getBall().setHasEffect(false);
+        			p.getBall().setEffectSizeDecreases(false);
+        		}
 
+        		p.setContBall(0);
+
+        	}
+        }
+    }
+    
+    public void verifyPadEffect() {
+        if (p.getPad().getHasEffect()) {
+        	p.setContPad(p.getContPad()+1);
+        	System.out.println(p.getContPad() / 60);
+        	if ((p.getContPad() / 60) >= 10) {
+        		if (p.getPad().getEffectSizeIncrease()) {
+        			p.getPad().setWidth(p.getPad().getWidth() / 2);
+        			p.getPad().setHasEffect(false);
+        			p.getPad().setEffectSizeIncrease(false);
+
+        		}
+
+        		if(p.getPad().getEffectSizeDecreases()) {
+        			p.getPad().setWidth(p.getPad().getWidth() * 2);
+        			p.getPad().setHasEffect(false);
+        			p.getPad().setEffectSizeDecreases(false);
+        		}
+        		p.setContPad(0);
+        	}
+    }
+    }
 
 }

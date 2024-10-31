@@ -73,12 +73,15 @@ public class PantallaJuego implements Screen {
     public int getVidas() {return vidas;}
     public int getPuntaje() {return puntaje;}
     public int getNivel() {return nivel;}
-
     public ShapeRenderer getShape() {return shape;}
+    public int getContBall() {return contBall;}
+    public int getContPad() {return contPad;}
 
     public void setVidas(int vidas) {this.vidas = vidas;}
     public void setBall(PingBall ball) {this.ball = ball;}
     public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
+    public void setContBall(int contBall) {this.contBall = contBall;}
+    public void setContPad(int contPad) {this.contPad = contPad;}
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
@@ -172,59 +175,10 @@ public class PantallaJuego implements Screen {
 
         }
 
+        gameLogic.verifyBallEffect();
 
-        if (ball.getHasEffect()) {
-        	contBall++;
-        	System.out.println(contBall / 60);
-        	if ((contBall / 60) >= 10) {
-        		if (ball.getEffectSlowDownBall()) {
-        			ball.setxSpeed(ball.getxSpeed() * 2);
-        		    ball.setySpeed(ball.getySpeed() * 2);
-            		ball.setHasEffect(false);
-            		ball.setEffectSlowDownBall(false);
-        		}
-        		if(ball.getEffectSizeIncrease()) {
-        			ball.setSize(15);
-            		ball.setHasEffect(false);
-            		ball.setEffectSizeIncrease(false);
-        		}
-         		if (ball.getEffectFastDownBall()) {
-        			ball.setxSpeed(ball.getxSpeed() / 2);
-        		    ball.setySpeed(ball.getySpeed() / 2);
-            		ball.setHasEffect(false);
-            		ball.setEffectFastDownBall(false);
-        		}
-        		if(ball.getEffectSizeDecreases()) {
-        			ball.setSize(15);
-            		ball.setHasEffect(false);
-            		ball.setEffectSizeDecreases(false);
-        		}
 
-        		contBall = 0;
-
-        	}
-        }
-
-        if (pad.getHasEffect()) {
-        	contPad++;
-        	System.out.println(contPad / 60);
-        	if ((contPad / 60) >= 10) {
-        		if (pad.getEffectSizeIncrease()) {
-        			pad.setWidth(pad.getWidth() / 2);
-            		pad.setHasEffect(false);
-            		pad.setEffectSizeIncrease(false);
-
-        		}
-
-        		if(pad.getEffectSizeDecreases()) {
-        			pad.setWidth(pad.getWidth() * 2);
-        			pad.setHasEffect(false);
-            		pad.setEffectSizeDecreases(false);
-        		}
-        		contPad = 0;
-        	}
-        }
-
+        gameLogic.verifyPadEffect();
 
         ball.dibujar(shape);
         shape.end();
