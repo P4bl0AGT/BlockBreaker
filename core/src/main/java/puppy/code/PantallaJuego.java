@@ -63,6 +63,8 @@ public class PantallaJuego implements Screen {
 
         ball = new PingBall(xPelota, 41, radio, 5, 7, true);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
+        
+        
     }
 
 

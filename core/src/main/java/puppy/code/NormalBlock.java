@@ -19,7 +19,7 @@ public class NormalBlock extends BlockDefinitive {
     @Override
     public void applyEfect(Paddle paddle, PingBall ball) {
         if (isDestroyed()) {
-            System.out.println("BLOQUE NORMAL");
+            //System.out.println("BLOQUE NORMAL");
         }
     }
 
