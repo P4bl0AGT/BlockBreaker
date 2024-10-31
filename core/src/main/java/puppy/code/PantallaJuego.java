@@ -155,6 +155,8 @@ public class PantallaJuego implements Screen {
 
         //verificar si se fue la bola x abajo
         gameLogic.underPlataform();
+        
+        
 
         // verificar game over
         gameLogic.verifyGameOver();
@@ -204,7 +206,8 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+    	Screen aa = new PantallaPausa(getGame(), this);
+        getGame().setScreen(aa);
     }
 
     @Override
