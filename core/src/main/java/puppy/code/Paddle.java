@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Paddle implements Andante{
+public class Paddle implements Sprite{
     private int x = 20;
     private int y = 20;
     private int width = 100;

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-public class PingBall implements Andante {
+public class PingBall implements Sprite {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private int x;
     private int y;
