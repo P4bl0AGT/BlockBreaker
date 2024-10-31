@@ -51,15 +51,19 @@ public class GoodBlock extends BlockDefinitive {
 					paddleSizeIncrease(paddle);
 				break;
 			case 1:{
-				if(!ball.getEffectSizeIncrease())
-					ballSizeIncrease(ball);
+				if(!ball.getHasEffect()) {
+					if(!ball.getEffectSizeIncrease())
+						ballSizeIncrease(ball);
+				}
 				break;
 			}
 					
 			case 2:{
-				if(!ball.getEffectSlowDownBall())
-					slowDownBall(ball);
-				break;
+				if(!ball.getHasEffect()) {
+					if(!ball.getEffectSlowDownBall())
+						slowDownBall(ball);
+					break;
+				}
 			}
 
 			}
