@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,6 +22,7 @@ public class PantallaJuego implements Screen {
     private SpriteBatch batch;
     private BitmapFont font;
     private ShapeRenderer shape;
+    private Texture background;
 
     private PingBall ball;
     private Paddle pad;
@@ -63,6 +65,8 @@ public class PantallaJuego implements Screen {
 
         ball = new PingBall(xPelota, 41, radio, 5, 7, true);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
+        
+        background = new Texture(Gdx.files.internal("Background01.png"));
         
         
     }
@@ -140,10 +144,18 @@ public class PantallaJuego implements Screen {
     @Override
     public void render(float delta) {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	
+    	batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
+    	
+    	
+    	
+    	
         shape.begin(ShapeRenderer.ShapeType.Filled);
         pad.actualizar();
         pad.dibujar(shape);
-
         ball.checkCollision(pad);
 
 
