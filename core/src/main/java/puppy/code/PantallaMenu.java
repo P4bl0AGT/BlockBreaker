@@ -8,12 +8,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaMenu implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    private BlockBreaker game;
+    private BlockBreakerGame game;
     private OrthographicCamera camera;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaMenu(BlockBreaker game) {
+    public PantallaMenu(BlockBreakerGame game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
@@ -21,8 +21,8 @@ public class PantallaMenu implements Screen {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public BlockBreaker getGame() {return game;}
-    public void setGame(BlockBreaker game) {this.game = game;}
+    public BlockBreakerGame getGame() {return game;}
+    public void setGame(BlockBreakerGame game) {this.game = game;}
 
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
@@ -44,7 +44,7 @@ public class PantallaMenu implements Screen {
         game.getFont().draw(game.getBatch(), "[->] ó [D] Mover Derecha", 180, 400);
         game.getFont().draw(game.getBatch(), "[ESPACIO] Lanzar pelota", 180, 350);
         game.getFont().draw(game.getBatch(), "[ESC] Poner Pausa", 180, 300);
-        
+
         game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
 
         game.getBatch().end();

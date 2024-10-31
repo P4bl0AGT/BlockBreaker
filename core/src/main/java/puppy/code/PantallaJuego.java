@@ -5,13 +5,10 @@ import java.util.Random;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class PantallaJuego implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    private BlockBreaker game;
+    private BlockBreakerGame game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private BitmapFont font;
@@ -34,15 +31,15 @@ public class PantallaJuego implements Screen {
     private int nivel;
 
     private boolean pausa = false;
-    
+
     private int contBall = 0 ;
     private int contPad = 0 ;
-    
+
     private GameLogic gameLogic;
- 
+
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaJuego(BlockBreaker game, int nivel, int puntaje, int vidas) {
+    public PantallaJuego(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
         this.game = game;
         this.nivel = nivel;
         this.puntaje = puntaje;
@@ -56,24 +53,24 @@ public class PantallaJuego implements Screen {
         //font = new BitmapFont();
         font = game.getFont();
         font.getData().setScale(2, 2);
-        crearBloques(2 + nivel); 
+        crearBloques(2 + nivel);
 
         shape = new ShapeRenderer();
         ball = new PingBall(Gdx.graphics.getWidth() / 2 - 10, 41, 15, 5, 7, true);
         pad = new Paddle(Gdx.graphics.getWidth() / 2 - 50, 40, 150, 12);
-    } 
+    }
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
     public PingBall getBall(){return ball;}
     public Paddle getPad() {return pad;}
-    public BlockBreaker getGame() {return game;}
+    public BlockBreakerGame getGame() {return game;}
     public int getVidas() {return vidas;}
     public int getPuntaje() {return puntaje;}
     public int getNivel() {return nivel;}
 
     public ShapeRenderer getShape() {return shape;}
-    
+
     public void setVidas(int vidas) {this.vidas = vidas;}
     public void setBall(PingBall ball) {this.ball = ball;}
     public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
@@ -119,6 +116,14 @@ public class PantallaJuego implements Screen {
         font.draw(batch, "Vidas : " + vidas, 210, 25);
         font.draw(batch, "Nivel : " + nivel, 410, 25);
         font.draw(batch, "HighScore : " + game.getHighScore(), 610, 25);
+
+        font.setColor((contPad != 0) ? Color.LIME: Color.WHITE);
+        font.draw(batch, "TimeB : " + (10 - contPad / 60), 850, 25);
+
+        font.setColor((contBall != 0) ? Color.YELLOW: Color.WHITE);
+        font.draw(batch, "TimeP : " + (10 - contBall / 60), 1050, 25);
+
+        font.setColor(Color.WHITE);
         batch.end();
     }
 
@@ -126,12 +131,13 @@ public class PantallaJuego implements Screen {
     public void render(float delta) {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shape.begin(ShapeRenderer.ShapeType.Filled);
+        pad.actualizar();
         pad.dibujar(shape);
-        
+
         ball.checkCollision(pad);
 
         //encapsulamiento el mas facil ese del this xD //
-        
+
         // monitorear inicio del juego
         gameLogic.monitorStartup();
 
@@ -159,10 +165,10 @@ public class PantallaJuego implements Screen {
             	blocks.remove(blocks.get(i));
                 i--;  // Ajusta el índice después de eliminar
             }
-            
-        }	
-        
-        
+
+        }
+
+
         if (ball.getHasEffect()) {
         	contBall++;
         	System.out.println(contBall / 60);
@@ -189,23 +195,23 @@ public class PantallaJuego implements Screen {
             		ball.setHasEffect(false);
             		ball.setEffectSizeDecreases(false);
         		}
-        		
+
         		contBall = 0;
-        		
+
         	}
         }
-        
+
         if (pad.getHasEffect()) {
         	contPad++;
         	System.out.println(contPad / 60);
         	if ((contPad / 60) >= 10) {
         		if (pad.getEffectSizeIncrease()) {
-        			pad.setWidth(pad.getWidth() / 2); 
+        			pad.setWidth(pad.getWidth() / 2);
             		pad.setHasEffect(false);
             		pad.setEffectSizeIncrease(false);
-   
+
         		}
-        		
+
         		if(pad.getEffectSizeDecreases()) {
         			pad.setWidth(pad.getWidth() * 2);
         			pad.setHasEffect(false);
@@ -214,10 +220,9 @@ public class PantallaJuego implements Screen {
         		contPad = 0;
         	}
         }
-        
-        
-        ball.dibujar(shape);
 
+
+        ball.dibujar(shape);
         shape.end();
         dibujaTextos();
     }

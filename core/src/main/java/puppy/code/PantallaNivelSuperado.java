@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaNivelSuperado implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    private BlockBreaker game;
+    private BlockBreakerGame game;
     private OrthographicCamera camera;
     private PantallaJuego pantalla;
     private int nivel;
@@ -17,7 +17,7 @@ public class PantallaNivelSuperado implements Screen {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaNivelSuperado(BlockBreaker game, int nivel, int puntaje, int vidas) {
+    public PantallaNivelSuperado(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
@@ -28,8 +28,8 @@ public class PantallaNivelSuperado implements Screen {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public BlockBreaker getGame() {return game;}
-    public void setGame(BlockBreaker game) {this.game = game;}
+    public BlockBreakerGame getGame() {return game;}
+    public void setGame(BlockBreakerGame game) {this.game = game;}
 
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}

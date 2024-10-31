@@ -5,13 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaPausa implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    private BlockBreaker game;
+    private BlockBreakerGame game;
     private OrthographicCamera camera;
     private PantallaJuego pantalla;
     private final String[] strOpciones = {"Volver", "Menu Principal"};
@@ -19,7 +17,7 @@ public class PantallaPausa implements Screen {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaPausa(BlockBreaker game, PantallaJuego pantalla) {
+    public PantallaPausa(BlockBreakerGame game, PantallaJuego pantalla) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
@@ -28,8 +26,8 @@ public class PantallaPausa implements Screen {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public BlockBreaker getGame() {return game;}
-    public void setGame(BlockBreaker game) {this.game = game;}
+    public BlockBreakerGame getGame() {return game;}
+    public void setGame(BlockBreakerGame game) {this.game = game;}
 
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}

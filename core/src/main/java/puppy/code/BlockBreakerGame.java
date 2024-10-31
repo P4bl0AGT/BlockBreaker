@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 // BASE DE JUEGO
 // NO MODIFICAR
 
-public class BlockBreaker extends Game {
+public class BlockBreakerGame extends Game {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private SpriteBatch batch;
     private BitmapFont font;

@@ -9,12 +9,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaGameOver implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    private BlockBreaker game;
+    private BlockBreakerGame game;
     private OrthographicCamera camera;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaGameOver(BlockBreaker game) {
+    public PantallaGameOver(BlockBreakerGame game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
@@ -22,8 +22,8 @@ public class PantallaGameOver implements Screen {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public BlockBreaker getGame() {return game;}
-    public void setGame(BlockBreaker game) {this.game = game;}
+    public BlockBreakerGame getGame() {return game;}
+    public void setGame(BlockBreakerGame game) {this.game = game;}
 
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
@@ -38,8 +38,8 @@ public class PantallaGameOver implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Game Over !!! ", 140, 600,400,1,true);
-        game.getFont().draw(game.getBatch(), "Presiona una tecla para reiniciar ...", 140, 400);
+        game.getFont().draw(game.getBatch(), "Game Over !!! ", 200, 600,400,1,true);
+        game.getFont().draw(game.getBatch(), "Presiona una tecla para reiniciar ...", 200, 400);
         game.getBatch().end();
 
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.Random;
+
 public class PingBall implements Sprite {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private int x;
@@ -54,47 +56,40 @@ public class PingBall implements Sprite {
     public int getSize() {
         return size;
     }
-    
+
+
+    /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
     public boolean getHasEffect() {
     	return hasEffect;
     }
-    
     public void setHasEffect(boolean hasEffect) {
     	this.hasEffect = hasEffect;
     }
-    
     public boolean getEffectSizeIncrease() {
     	return effectSizeIncrease;
     }
-    
     public void setEffectSizeIncrease(boolean effectSizeIncrease) {
     	this.effectSizeIncrease = effectSizeIncrease;
     }
-    
     public boolean getEffectSlowDownBall() {
     	return effectSlowDownBall;
     }
-    
     public void setEffectSlowDownBall(boolean effectSlowDownBall) {
     	this.effectSlowDownBall = effectSlowDownBall;
     }
-    
     public boolean getEffectSizeDecreases() {
     	return effectSizeDecreases;
     }
-    
     public void setEffectSizeDecreases(boolean effectSizeDecreases) {
     	this.effectSizeDecreases = effectSizeDecreases;
     }
-    
     public boolean getEffectFastDownBall() {
     	return effectFastDownBall;
     }
-    
     public void setEffectFastDownBall(boolean effectFastDownBall) {
     	this.effectFastDownBall = effectFastDownBall;
     }
-    
+
     public void setSize(int size) {
         this.size = size;
     }
@@ -151,7 +146,7 @@ public class PingBall implements Sprite {
         if (collidesWith(paddle) && estaQuieto) {
         	ySpeed = -ySpeed;
             color = Color.GREEN;
-            
+
         }
         else if (collidesWith(paddle) && !estaQuieto) {
         	ySpeed = -ySpeed;
@@ -170,22 +165,24 @@ public class PingBall implements Sprite {
 
     public void checkCollision(BlockDefinitive block) {
         if (collidesWith(block)) {
+            Random r = new Random(y + x);
+            block.setCc(new Color(0.1f + r.nextFloat(1), r.nextFloat(1), r.nextFloat(1), 10));
             ySpeed = -ySpeed;
-            block.takeHit(); 
+            block.takeHit();
 
-            
+
             if (block.itsDestroyed()) {
             	breaking.play();
-                block.destroyed = true;
-                
+                block.setDestroyed(true);
+
             }
         }
     }
 
 
     private boolean collidesWith(BlockDefinitive bb) {
-        boolean intersectaX = (bb.x + bb.width >= x - size) && (bb.x <= x + size);
-        boolean intersectaY = (bb.y + bb.height >= y - size) && (bb.y <= y + size);
+        boolean intersectaX = (bb.getX() + bb.getWidth() >= x - size) && (bb.getX() <= x + size);
+        boolean intersectaY = (bb.getY() + bb.getHeight() >= y - size) && (bb.getY() <= y + size);
         return intersectaX && intersectaY;
     }
 
