@@ -30,8 +30,6 @@ public class PantallaJuego implements Screen {
     private int puntaje;
     private int nivel;
 
-    private boolean pausa = false;
-
     private int contBall = 0 ;
     private int contPad = 0 ;
 
@@ -47,17 +45,24 @@ public class PantallaJuego implements Screen {
         gameLogic = new GameLogic(this);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 800);
+        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
 
         batch = game.getBatch();
-        //font = new BitmapFont();
         font = game.getFont();
         font.getData().setScale(2, 2);
-        crearBloques(2 + nivel);
+        crearBloques(1 + nivel);
 
         shape = new ShapeRenderer();
-        ball = new PingBall(Gdx.graphics.getWidth() / 2 - 10, 41, 15, 5, 7, true);
-        pad = new Paddle(Gdx.graphics.getWidth() / 2 - 50, 40, 150, 12);
+
+        int ancho = BlockBreakerGame.ANCHO_PLATAFORMA_PREDETERMINADO;
+        int alto = BlockBreakerGame.ALTO_PLATAFORMA_PREDETERMINADO;
+        int radio = BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO;
+
+        int xPelota = Gdx.graphics.getWidth() / 2;
+        int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
+
+        ball = new PingBall(xPelota, 41, radio, 5, 7, true);
+        pad = new Paddle(xPlataforma, 40, ancho, alto);
     }
 
 
@@ -120,7 +125,7 @@ public class PantallaJuego implements Screen {
         font.setColor((contPad != 0) ? Color.LIME: Color.WHITE);
         font.draw(batch, "TimeB : " + (10 - contPad / 60), 850, 25);
 
-        font.setColor((contBall != 0) ? Color.YELLOW: Color.WHITE);
+        font.setColor((contBall != 0) ? Color.LIME: Color.WHITE);
         font.draw(batch, "TimeP : " + (10 - contBall / 60), 1050, 25);
 
         font.setColor(Color.WHITE);
@@ -136,7 +141,6 @@ public class PantallaJuego implements Screen {
 
         ball.checkCollision(pad);
 
-        //encapsulamiento el mas facil ese del this xD //
 
         // monitorear inicio del juego
         gameLogic.monitorStartup();

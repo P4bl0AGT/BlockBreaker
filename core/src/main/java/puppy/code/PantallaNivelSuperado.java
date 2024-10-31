@@ -20,7 +20,7 @@ public class PantallaNivelSuperado implements Screen {
     public PantallaNivelSuperado(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 800);
+        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         this.nivel = nivel;
         this.puntaje = puntaje;
         this.vidas = vidas;
@@ -51,7 +51,7 @@ public class PantallaNivelSuperado implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             Screen ss = new PantallaJuego(game, nivel + 1, puntaje, vidas);
-            ss.resize(1200, 800);
+            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             game.setScreen(ss);
             dispose();
         }

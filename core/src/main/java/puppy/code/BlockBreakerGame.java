@@ -16,6 +16,18 @@ public class BlockBreakerGame extends Game {
     private int highScore;
 
 
+    /* = = = = = = = = = = = = CONSTANTES  = = = = = = = = = = = = = */
+    public static final int RADIO_PELOTA_PREDETERMINADO = 15;
+    public static final int ANCHO_PLATAFORMA_PREDETERMINADO = 150;
+    public static final int ALTO_PLATAFORMA_PREDETERMINADO = 12;
+    public static final int VIDAS_PREDETERMINADO= 3;
+    public static final int NIVEL_PREDETERMINADO = 1;
+    public static final int PUNTAJE_PREDETERMINADO = 0;
+    public static final int ANCHO_PANTALLA_PREDETERMINADO = 1200;
+    public static final int ALTO_PANTALLA_PREDETERMINADO = 800;
+
+
+
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public void create() {
         batch = new SpriteBatch();

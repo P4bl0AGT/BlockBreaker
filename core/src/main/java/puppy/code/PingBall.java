@@ -4,7 +4,6 @@ package puppy.code;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 import java.util.Random;
@@ -56,43 +55,8 @@ public class PingBall implements Sprite {
     public int getSize() {
         return size;
     }
+    public void setSize(int size){this.size = size;}
 
-
-    /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public boolean getHasEffect() {
-    	return hasEffect;
-    }
-    public void setHasEffect(boolean hasEffect) {
-    	this.hasEffect = hasEffect;
-    }
-    public boolean getEffectSizeIncrease() {
-    	return effectSizeIncrease;
-    }
-    public void setEffectSizeIncrease(boolean effectSizeIncrease) {
-    	this.effectSizeIncrease = effectSizeIncrease;
-    }
-    public boolean getEffectSlowDownBall() {
-    	return effectSlowDownBall;
-    }
-    public void setEffectSlowDownBall(boolean effectSlowDownBall) {
-    	this.effectSlowDownBall = effectSlowDownBall;
-    }
-    public boolean getEffectSizeDecreases() {
-    	return effectSizeDecreases;
-    }
-    public void setEffectSizeDecreases(boolean effectSizeDecreases) {
-    	this.effectSizeDecreases = effectSizeDecreases;
-    }
-    public boolean getEffectFastDownBall() {
-    	return effectFastDownBall;
-    }
-    public void setEffectFastDownBall(boolean effectFastDownBall) {
-    	this.effectFastDownBall = effectFastDownBall;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
     public int getxSpeed() {
         return xSpeed;
     }
@@ -105,6 +69,7 @@ public class PingBall implements Sprite {
     public void setySpeed(int ySpeed) {
         this.ySpeed = ySpeed;
     }
+
     public Color getColor() {
         return color;
     }
@@ -113,6 +78,22 @@ public class PingBall implements Sprite {
     }
     public boolean getEstaQuieto() {return estaQuieto;}
     public void setEstaQuieto(boolean estaQuieto) {this.estaQuieto = estaQuieto;}
+
+    public Sound getBoingSound() {return boing;}
+    public void setBoingSound(Sound boing) {this.boing = boing;}
+    public Sound getBreakingSound() {return breaking;}
+    public void setBreakingSound(Sound breaking) {this.breaking = breaking;}
+
+    public boolean getHasEffect() {return hasEffect;}
+    public void setHasEffect(boolean hasEffect) {this.hasEffect = hasEffect;}
+    public boolean getEffectSizeIncrease() {return effectSizeIncrease;}
+    public void setEffectSizeIncrease(boolean effectSizeIncrease) {this.effectSizeIncrease = effectSizeIncrease;}
+    public boolean getEffectSlowDownBall() {return effectSlowDownBall;}
+    public void setEffectSlowDownBall(boolean effectSlowDownBall) {this.effectSlowDownBall = effectSlowDownBall;}
+    public boolean getEffectSizeDecreases() {return effectSizeDecreases;}
+    public void setEffectSizeDecreases(boolean effectSizeDecreases) {this.effectSizeDecreases = effectSizeDecreases;}
+    public boolean getEffectFastDownBall() {return effectFastDownBall;}
+    public void setEffectFastDownBall(boolean effectFastDownBall) {this.effectFastDownBall = effectFastDownBall;}
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
@@ -143,25 +124,40 @@ public class PingBall implements Sprite {
     }
 
     public void checkCollision(Paddle paddle) {
-        if (collidesWith(paddle) && estaQuieto) {
-        	ySpeed = -ySpeed;
+        boolean hayColision = collidesWith(paddle);
+        if (hayColision) {
+            ySpeed = -ySpeed;
             color = Color.GREEN;
-
+            if (!estaQuieto)
+                boing.play();
         }
-        else if (collidesWith(paddle) && !estaQuieto) {
-        	ySpeed = -ySpeed;
-        	boing.play();
-        	color = Color.GREEN;
-        } else {
+        else
             color = Color.WHITE;
-        }
     }
+
+
 
     private boolean collidesWith(Paddle pp) {
-        boolean intersectaX = (pp.getX() + pp.getWidth() >= x - size) && (pp.getX() <= x + size);
-        boolean intersectaY = (pp.getY() + pp.getHeight() >= y - size) && (pp.getY() <= y + size);
-        return intersectaX && intersectaY;
+        int padLeft = pp.getX();
+        int padRight = pp.getX() + pp.getWidth();
+        int padBottom = pp.getY();
+        int padUp = pp.getY() + pp.getHeight();
+
+        int ballLeft = x - size;
+        int ballRight = x + size;
+        int ballBottom = y - size;
+        int ballUp = y + size;
+
+        //Si choco
+        if ((ballLeft <= padRight && ballRight >= padLeft) &&
+            (ballUp >= padBottom && ballBottom <= padUp)) {
+            y = padUp + size -1; //si esta dentro, -1 para asegurar colision
+            return true;
+        }
+        return false;
     }
+
+
 
     public void checkCollision(BlockDefinitive block) {
         if (collidesWith(block)) {

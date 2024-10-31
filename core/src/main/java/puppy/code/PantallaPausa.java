@@ -20,7 +20,7 @@ public class PantallaPausa implements Screen {
     public PantallaPausa(BlockBreakerGame game, PantallaJuego pantalla) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 800);
+        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         this.pantalla = pantalla;
     }
 

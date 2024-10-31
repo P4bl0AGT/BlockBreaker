@@ -50,8 +50,8 @@ public class PantallaMenu implements Screen {
         game.getBatch().end();
 
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game, 1, 0, 3);
-            ss.resize(1200, 800);
+            Screen ss = new PantallaJuego(game, BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
+            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             game.setScreen(ss);
             dispose();
         }

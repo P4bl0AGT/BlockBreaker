@@ -17,16 +17,26 @@ public class PantallaGameOver implements Screen {
     public PantallaGameOver(BlockBreakerGame game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1200, 800);
+        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
     }
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public BlockBreakerGame getGame() {return game;}
-    public void setGame(BlockBreakerGame game) {this.game = game;}
+    public BlockBreakerGame getGame() {
+        return game;
+    }
 
-    public OrthographicCamera getCamera() {return camera;}
-    public void setCamera(OrthographicCamera camera) {this.camera = camera;}
+    public void setGame(BlockBreakerGame game) {
+        this.game = game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
@@ -38,13 +48,13 @@ public class PantallaGameOver implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Game Over !!! ", 200, 600,400,1,true);
+        game.getFont().draw(game.getBatch(), "Game Over !!! ", 200, 600, 400, 1, true);
         game.getFont().draw(game.getBatch(), "Presiona una tecla para reiniciar ...", 200, 400);
         game.getBatch().end();
 
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game,1,0, 3);
-            ss.resize(1200, 800);
+            Screen ss = new PantallaJuego(game, BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
+            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             game.setScreen(ss);
             dispose();
         }

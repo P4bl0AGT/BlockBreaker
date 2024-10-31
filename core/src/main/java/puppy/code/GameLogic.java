@@ -27,11 +27,22 @@ public class GameLogic {
     public void monitorStartup(){
 
         if (p.getBall().estaQuieto()) {
-        	p.getBall().setXY(p.getPad().getX()+p.getPad().getWidth()/2+8, p.getPad().getY()+p.getPad().getHeight()+16);
+        	p.getBall().setXY(this.ballXinPaddle(), this.ballYinPaddle());
         	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         		p.getBall().setEstaQuieto(false);
         }else
         	p.getBall().actualizar();
+    }
+
+    public int ballXinPaddle() {
+        //(posicion Y plataforma) + (mitad plataforma)
+        return p.getPad().getX() + p.getPad().getWidth() / 2;
+    }
+
+    public int ballYinPaddle() {
+        int extraY = 2;
+        //(Posicion Y plataforma) + (Altura plataforma) + (Radio pelota) + (Extra)
+        return p.getPad().getY() + p.getPad().getHeight() + p.getBall().getSize() + extraY;
     }
 
     public void monitorPausee(){
@@ -42,9 +53,10 @@ public class GameLogic {
     }
 
     public void underPlataform(){
-    	 if (p.getBall().getY()<0) {
-         	p.setVidas(p.getVidas()-1);
-         	p.setBall(new PingBall(p.getPad().getX()+p.getPad().getWidth()/2-5, p.getPad().getY()+p.getPad().getHeight()+11, 15, 5, 7, true));
+    	 //if (p.getBall().getY()<0) {
+        if (p.getBall().getY() < p.getPad().getY()) {
+             p.setVidas(p.getVidas() - 1);
+             p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO, 5, 7, true));
          }
     }
 
@@ -53,7 +65,7 @@ public class GameLogic {
             if (p.getPuntaje() > p.getGame().getHighScore())
             	p.getGame().setHighScore(p.getPuntaje() );
             Screen ss = new PantallaGameOver(p.getGame());
-            ss.resize(1200, 800);
+            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             p.getGame().setScreen(ss);
             p.dispose();
         }
