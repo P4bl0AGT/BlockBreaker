@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
@@ -11,13 +13,16 @@ public class PantallaGameOver implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
-
+    private SpriteBatch batch;
+    private Texture background;
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public PantallaGameOver(BlockBreakerGame game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch = game.getBatch();
+        background = new Texture(Gdx.files.internal("Background03.png"));
     }
 
 
@@ -47,6 +52,11 @@ public class PantallaGameOver implements Screen {
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
+        
         game.getBatch().begin();
         game.getFont().draw(game.getBatch(), "Game Over !!! ", 200, 600, 400, 1, true);
         game.getFont().draw(game.getBatch(), "Presiona una tecla para reiniciar ...", 200, 400);

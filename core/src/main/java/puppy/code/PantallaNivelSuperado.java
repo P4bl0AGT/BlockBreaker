@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaNivelSuperado implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private Texture background;
     private PantallaJuego pantalla;
     private int nivel;
     private int puntaje;
@@ -24,6 +28,8 @@ public class PantallaNivelSuperado implements Screen {
         this.nivel = nivel;
         this.puntaje = puntaje;
         this.vidas = vidas;
+        batch = game.getBatch();
+        background = new Texture(Gdx.files.internal("Background04.png"));
     }
 
 
@@ -43,6 +49,11 @@ public class PantallaNivelSuperado implements Screen {
 
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
 
         game.getBatch().begin();
         game.getFont().draw(game.getBatch(), "Nivel Superado !!! ", 140, 600, 400, 1, true);

@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class PantallaMenu implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private Texture background;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -17,6 +21,8 @@ public class PantallaMenu implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
+        batch = game.getBatch();
+        background = new Texture(Gdx.files.internal("Background02.png"));
     }
 
 
@@ -36,6 +42,11 @@ public class PantallaMenu implements Screen {
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
+        
         game.getBatch().begin();
         game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
 
