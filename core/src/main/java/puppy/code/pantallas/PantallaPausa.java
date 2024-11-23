@@ -2,7 +2,6 @@ package puppy.code.pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import puppy.code.principal.BlockBreakerGame;
 
-public class PantallaPausa implements Screen {
+public class PantallaPausa extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
@@ -44,20 +43,21 @@ public class PantallaPausa implements Screen {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+    protected void iniciar() {
+    	ScreenUtils.clear(0, 0, 0.2f, 1);
 
         batch.begin();
         batch.draw(background, 0, 0, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
-
-        camera.update();
-        game.getBatch().setProjectionMatrix(camera.combined);
+    }
+	protected void dibujar() {
+		game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
         game.getFont().draw(game.getBatch(), "Pausa !!! ", 140, 700, 400, 1, true);
-
+	}
+	protected void actualizar() {
+		camera.update();
         for (int i = 0; i < strOpciones.length; i++) {
             if (i == opcion) {
                 game.getFont().setColor(Color.GOLD);
@@ -68,9 +68,8 @@ public class PantallaPausa implements Screen {
             }
         }
         game.getFont().setColor(Color.WHITE);
-        game.getBatch().end();
-
-        //Mover arriba abajo
+        
+      //Mover arriba abajo
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             opcion = (opcion == 0) ? 1: 0;
         }
@@ -85,8 +84,11 @@ public class PantallaPausa implements Screen {
                 dispose();
             }
         }
-    }
-
+	}
+	protected void finalizar() {
+		game.getBatch().end();
+	}
+   
     @Override
     public void show() {
         // TODO Auto-generated method stub
