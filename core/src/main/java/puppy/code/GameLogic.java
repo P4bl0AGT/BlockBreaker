@@ -118,7 +118,7 @@ public class GameLogic{
              p.setContBall(0);
              p.setContPad(0);
              p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO, 5, 7, true));
-             p.setPad(new Paddle(20,20,100,10));
+             p.setPad(new Paddle(20,20,150,10));
          }
     }
 
