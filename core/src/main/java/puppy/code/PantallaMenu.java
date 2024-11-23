@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class PantallaMenu implements Screen {
+public class PantallaMenu extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
@@ -35,15 +35,15 @@ public class PantallaMenu implements Screen {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-
+    protected void iniciar() {
+    	ScreenUtils.clear(0, 0, 0.2f, 1);
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
-
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+    }
+    
+    protected void dibujar() {
+    	batch.begin();
         batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         batch.end();
         
@@ -59,7 +59,9 @@ public class PantallaMenu implements Screen {
         game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
 
         game.getBatch().end();
-
+    }
+    
+    protected void actualizar() {
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             Screen ss = new PantallaJuego(game, BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
             ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
@@ -67,7 +69,11 @@ public class PantallaMenu implements Screen {
             dispose();
         }
     }
-
+    
+    protected void finalizar() {
+    	
+    }
+    
     @Override
     public void show() {
         // TODO Auto-generated method stub

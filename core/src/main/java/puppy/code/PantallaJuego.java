@@ -1,12 +1,12 @@
 package puppy.code;
 
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+//import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
-public class PantallaJuego implements Screen {
+public class PantallaJuego extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
@@ -94,53 +94,49 @@ public class PantallaJuego implements Screen {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    @Override
-    public void render(float delta) {
+    
+    protected void iniciar() {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	
     	batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
-        batch.end();
-  
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        
-        pad.actualizar();
+    }
+    
+    protected void dibujar() {
+    	batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
         pad.dibujar(shape);
-        ball.checkCollision(pad);
         ball.dibujar(shape);
-
+        gameLogic.dibujarTextos();
+    }
+    
+    protected void actualizar() {
+    	pad.actualizar();
+        ball.checkCollision(pad);       
         // monitorear inicio del juego
         gameLogic.monitorStartup();
-
         //Monitorear pausa
         gameLogic.monitorPausee();
-
         //verificar si se fue la bola x abajo
         gameLogic.underPlataform();
-        
-        
         // verificar game over
         gameLogic.verifyGameOver();
-
         // verificar si el nivel se terminó
         gameLogic.verifyGameComplete(blocks);
-        
         //dibujar bloques
         gameLogic.drawsBlocks(blocks);
-
         // actualizar estado de los bloques
         gameLogic.blockState(blocks);
-        
+        //verificar si la bola tiene efecto
         gameLogic.verifyBallEffect();
-
-        gameLogic.verifyPadEffect();
-
-        gameLogic.dibujarTextos();
-        
-        shape.end();
+        //verificar si la plataforma tiene efecto
+        gameLogic.verifyPadEffect();       
     }
 
+    protected void finalizar() {
+    	shape.end();
+    }
+    	
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
