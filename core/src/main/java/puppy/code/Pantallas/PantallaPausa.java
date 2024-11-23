@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import puppy.code.BlockBreakerGame;
 
 public class PantallaPausa implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
@@ -17,8 +18,8 @@ public class PantallaPausa implements Screen {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaPausa(BlockBreakerGame game, PantallaJuego pantalla) {
-        this.game = game;
+    public PantallaPausa(PantallaJuego pantalla) {
+        this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         this.pantalla = pantalla;
@@ -69,7 +70,7 @@ public class PantallaPausa implements Screen {
                 game.setScreen(pantalla);
                 dispose();
             } else if (opcion == 1) { //menu
-                game.setScreen(new PantallaMenu(game));
+                game.setScreen(new PantallaMenu());
                 dispose();
             }
         }

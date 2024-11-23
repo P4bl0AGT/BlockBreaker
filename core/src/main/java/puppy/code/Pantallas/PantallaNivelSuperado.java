@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,22 +7,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import puppy.code.BlockBreakerGame;
+import puppy.code.Template;
 
-public class PantallaNivelSuperado implements Screen {
+public class PantallaNivelSuperado extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Texture background;
-    private PantallaJuego pantalla;
+    //private PantallaJuego pantalla;
     private int nivel;
     private int puntaje;
     private int vidas;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaNivelSuperado(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
-        this.game = game;
+    public PantallaNivelSuperado(int nivel, int puntaje, int vidas) {
+        this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         this.nivel = nivel;
@@ -44,14 +46,17 @@ public class PantallaNivelSuperado implements Screen {
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+    protected void iniciar() {
+    	ScreenUtils.clear(0, 0, 0.2f, 1);
 
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+    }
+
+    protected void dibujar() {
+    	batch.begin();
         batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         batch.end();
 
@@ -59,14 +64,19 @@ public class PantallaNivelSuperado implements Screen {
         game.getFont().draw(game.getBatch(), "Nivel Superado !!! ", 140, 600, 400, 1, true);
         game.getFont().draw(game.getBatch(), "Presiona ENTER para continuar ...", 140, 400);
         game.getBatch().end();
+    }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            Screen ss = new PantallaJuego(game, nivel + 1, puntaje, vidas);
+    protected void actualizar() {
+    	if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            Screen ss = new PantallaJuego(nivel + 1, puntaje, vidas);
             ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             game.setScreen(ss);
             dispose();
-        }
+    	}
     }
+
+    protected void finalizar() {}
+
 
 
     @Override

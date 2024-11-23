@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import puppy.code.BlockBreakerGame;
+import puppy.code.Template;
 
-public class PantallaMenu implements Screen {
+public class PantallaMenu extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
@@ -17,8 +19,8 @@ public class PantallaMenu implements Screen {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaMenu(BlockBreakerGame game) {
-        this.game = game;
+    public PantallaMenu() {
+        this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
         batch = game.getBatch();
@@ -35,18 +37,18 @@ public class PantallaMenu implements Screen {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-
+    protected void iniciar() {
+    	ScreenUtils.clear(0, 0, 0.2f, 1);
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
-
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+    }
+
+    protected void dibujar() {
+    	batch.begin();
         batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         batch.end();
-        
+
         game.getBatch().begin();
         game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
 
@@ -59,13 +61,19 @@ public class PantallaMenu implements Screen {
         game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
 
         game.getBatch().end();
+    }
 
+    protected void actualizar() {
         if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-            Screen ss = new PantallaJuego(game, BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
+            Screen ss = new PantallaJuego(BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
             ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             game.setScreen(ss);
             dispose();
         }
+    }
+
+    protected void finalizar() {
+
     }
 
     @Override

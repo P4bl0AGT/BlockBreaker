@@ -1,21 +1,22 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+//import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import puppy.code.*;
 
 
-public class PantallaJuego implements Screen {
+public class PantallaJuego extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
@@ -23,6 +24,7 @@ public class PantallaJuego implements Screen {
     private BitmapFont font;
     private ShapeRenderer shape;
     private Texture background;
+    private int backgroundY;
 
     private PingBall ball;
     private Paddle pad;
@@ -39,8 +41,8 @@ public class PantallaJuego implements Screen {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaJuego(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
-        this.game = game;
+    public PantallaJuego(int nivel, int puntaje, int vidas) {
+        this.game = BlockBreakerGame.getInstancia();
         this.nivel = nivel;
         this.puntaje = puntaje;
         this.vidas = vidas; //Hay que cambiarlo al paddle ¿?
@@ -52,7 +54,7 @@ public class PantallaJuego implements Screen {
         batch = game.getBatch();
         font = game.getFont();
         font.getData().setScale(2, 2);
-        crearBloques(1 + nivel);
+        gameLogic.crearBloques(blocks, 1 + nivel);
 
         shape = new ShapeRenderer();
 
@@ -65,10 +67,11 @@ public class PantallaJuego implements Screen {
 
         ball = new PingBall(xPelota, 41, radio, 5, 7, true);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
-        
-        background = new Texture(Gdx.files.internal("Background01.png"));
-        
-        
+
+        background = new Texture(Gdx.files.internal("temp.jpg"));
+        backgroundY = 0;
+
+
     }
 
 
@@ -82,6 +85,9 @@ public class PantallaJuego implements Screen {
     public ShapeRenderer getShape() {return shape;}
     public int getContBall() {return contBall;}
     public int getContPad() {return contPad;}
+    public OrthographicCamera getCamera() {return camera;}
+    public SpriteBatch getBatch() {return batch;}
+    public BitmapFont getFont() {return font;}
 
     public void setVidas(int vidas) {this.vidas = vidas;}
     public void setBall(PingBall ball) {this.ball = ball;}
@@ -92,114 +98,54 @@ public class PantallaJuego implements Screen {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    public void crearBloques(int filas) {
-        blocks.clear();
-        int blockWidth = 140; //70
-        int blockHeight = 40; //26
-        int y = Gdx.graphics.getHeight();
-        Random random = new Random();
 
-        for (int cont = 0; cont < filas; cont++) {
-            //separacion y entre bloques
-            y -= blockHeight + 10;
-            //separacion x entre bloques
-            for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
-                BlockDefinitive block;
-                int blockType = random.nextInt(3); // Genera un número aleatorio entre 0 y 2
-
-                if (blockType == 0) {
-                    block = new GoodBlock(x, y, blockWidth, blockHeight);
-                } else if (blockType == 1) {
-                    block = new BadBlock(x, y, blockWidth, blockHeight);
-                } else {
-                    block = new NormalBlock(x, y, blockWidth, blockHeight);
-                }
-
-                blocks.add(block);
-            }
-        }
-    }
-
-    public void dibujaTextos() {
-        //actualizar matrices de la cámara
-        camera.update();
-        //actualizar
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        //dibujar textos
-        font.draw(batch, "Puntos: " + puntaje, 10, 25);
-        font.draw(batch, "Vidas : " + vidas, 210, 25);
-        font.draw(batch, "Nivel : " + nivel, 410, 25);
-        font.draw(batch, "HighScore : " + game.getHighScore(), 610, 25);
-
-        font.setColor((contPad != 0) ? Color.LIME: Color.WHITE);
-        font.draw(batch, "TimeP : " + (10 - contPad / 60), 850, 25);
-
-        font.setColor((contBall != 0) ? Color.LIME: Color.WHITE);
-        font.draw(batch, "TimeB : " + (10 - contBall / 60), 1050, 25);
-
-        font.setColor(Color.WHITE);
-        batch.end();
-    }
-
-    @Override
-    public void render(float delta) {
+    protected void iniciar() {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	
     	batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
-        batch.end();
-    	
-    	
-    	
-    	
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        pad.actualizar();
+    }
+
+    protected void dibujar() {
+        batch.draw(background, 0, backgroundY, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, 4*BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
         pad.dibujar(shape);
+        ball.dibujar(shape);
+        gameLogic.dibujarTextos();
+    }
+
+    protected void actualizar() {
+        //movimiento fondo
+        backgroundY -= 2;
+        // Si el fondo salio
+        if (backgroundY <= -background.getWidth()-1100) {
+            backgroundY = 0;
+        }
+
+    	pad.actualizar();
         ball.checkCollision(pad);
-
-
         // monitorear inicio del juego
         gameLogic.monitorStartup();
-
         //Monitorear pausa
         gameLogic.monitorPausee();
-
         //verificar si se fue la bola x abajo
         gameLogic.underPlataform();
-        
-        
-
         // verificar game over
         gameLogic.verifyGameOver();
-
         // verificar si el nivel se terminó
-        if (blocks.isEmpty())
-        	gameLogic.levelComplete();
-
+        gameLogic.verifyGameComplete(blocks);
         //dibujar bloques
-        for (BlockDefinitive b : blocks) {
-        	gameLogic.createBlock(b);
-        }
-
+        gameLogic.drawsBlocks(blocks);
         // actualizar estado de los bloques
-        for (int i = 0; i < blocks.size(); i++) {
-            if (gameLogic.checkBlock(blocks.get(i))) {
-            	blocks.remove(blocks.get(i));
-                i--;  // Ajusta el índice después de eliminar
-            }
-
-        }
-
+        gameLogic.blockState(blocks);
+        //verificar si la bola tiene efecto
         gameLogic.verifyBallEffect();
-
-
+        //verificar si la plataforma tiene efecto
         gameLogic.verifyPadEffect();
+    }
 
-        ball.dibujar(shape);
-        shape.end();
-        dibujaTextos();
+    protected void finalizar() {
+    	shape.end();
     }
 
     @Override
@@ -219,7 +165,7 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void pause() {
-    	Screen aa = new PantallaPausa(getGame(), this);
+    	Screen aa = new PantallaPausa(this);
         getGame().setScreen(aa);
     }
 
