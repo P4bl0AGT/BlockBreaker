@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import puppy.code.Pantallas.PantallaMenu;
 
 
 // BASE DE JUEGO
@@ -27,15 +28,32 @@ public class BlockBreakerGame extends Game {
     public static final int ALTO_PANTALLA_PREDETERMINADO = 800;
 
 
+    private static BlockBreakerGame instancia;
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
+    private BlockBreakerGame() {
+    }
+
+    // Metodo para Singleton
+    public static BlockBreakerGame getInstancia() {
+        // Crear la instancia solo si no existe
+        if (instancia == null) {
+            instancia = new BlockBreakerGame();
+        }
+        return instancia;
+    }
+
+
     public void create() {
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.getData().setScale(2f);
-        highScore = 0;
-        Screen ss = new PantallaMenu(this);
-        this.setScreen(ss);
+        BlockBreakerGame juego = BlockBreakerGame.getInstancia();
+
+        juego.batch = new SpriteBatch();
+        juego.font = new BitmapFont();
+        juego.font.getData().setScale(2f);
+        juego.highScore = 0;
+
+        Screen ss = new PantallaMenu();
+        juego.setScreen(ss);
     }
 
 

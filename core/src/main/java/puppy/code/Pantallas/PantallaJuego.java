@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import java.util.ArrayList;
 //import java.util.Random;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import puppy.code.*;
 
 
 public class PantallaJuego extends Template {
@@ -23,6 +24,7 @@ public class PantallaJuego extends Template {
     private BitmapFont font;
     private ShapeRenderer shape;
     private Texture background;
+    private int backgroundY;
 
     private PingBall ball;
     private Paddle pad;
@@ -39,8 +41,8 @@ public class PantallaJuego extends Template {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaJuego(BlockBreakerGame game, int nivel, int puntaje, int vidas) {
-        this.game = game;
+    public PantallaJuego(int nivel, int puntaje, int vidas) {
+        this.game = BlockBreakerGame.getInstancia();
         this.nivel = nivel;
         this.puntaje = puntaje;
         this.vidas = vidas; //Hay que cambiarlo al paddle ¿?
@@ -65,10 +67,11 @@ public class PantallaJuego extends Template {
 
         ball = new PingBall(xPelota, 41, radio, 5, 7, true);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
-        
-        background = new Texture(Gdx.files.internal("Background01.png"));
-        
-        
+
+        background = new Texture(Gdx.files.internal("temp.jpg"));
+        backgroundY = 0;
+
+
     }
 
 
@@ -94,25 +97,32 @@ public class PantallaJuego extends Template {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    
+
     protected void iniciar() {
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     	batch.setProjectionMatrix(camera.combined);
         batch.begin();
         shape.begin(ShapeRenderer.ShapeType.Filled);
     }
-    
+
     protected void dibujar() {
-    	batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.draw(background, 0, backgroundY, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, 4*BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
         batch.end();
         pad.dibujar(shape);
         ball.dibujar(shape);
         gameLogic.dibujarTextos();
     }
-    
+
     protected void actualizar() {
+        //movimiento fondo
+        backgroundY -= 2;
+        // Si el fondo salio
+        if (backgroundY <= -background.getWidth()-1100) {
+            backgroundY = 0;
+        }
+
     	pad.actualizar();
-        ball.checkCollision(pad);       
+        ball.checkCollision(pad);
         // monitorear inicio del juego
         gameLogic.monitorStartup();
         //Monitorear pausa
@@ -130,13 +140,13 @@ public class PantallaJuego extends Template {
         //verificar si la bola tiene efecto
         gameLogic.verifyBallEffect();
         //verificar si la plataforma tiene efecto
-        gameLogic.verifyPadEffect();       
+        gameLogic.verifyPadEffect();
     }
 
     protected void finalizar() {
     	shape.end();
     }
-    	
+
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
@@ -154,7 +164,7 @@ public class PantallaJuego extends Template {
 
     @Override
     public void pause() {
-    	Screen aa = new PantallaPausa(getGame(), this);
+    	Screen aa = new PantallaPausa(this);
         getGame().setScreen(aa);
     }
 

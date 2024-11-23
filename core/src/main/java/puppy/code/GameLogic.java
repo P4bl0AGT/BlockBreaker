@@ -7,6 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import puppy.code.Pantallas.PantallaGameOver;
+import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.Pantallas.PantallaNivelSuperado;
+import puppy.code.Pantallas.PantallaPausa;
 
 
 public class GameLogic {
@@ -48,7 +52,7 @@ public class GameLogic {
         p.getFont().setColor(Color.WHITE);
         p.getBatch().end();
     }
-    
+
     public void crearBloques(ArrayList<BlockDefinitive> blocks, int filas) {
         blocks.clear();
         int blockWidth = 140; //70
@@ -76,7 +80,7 @@ public class GameLogic {
             }
         }
     }
-    
+
     // monitorear inicio del juego //
     public void monitorStartup(){
 
@@ -101,7 +105,7 @@ public class GameLogic {
 
     public void monitorPausee(){
     	if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Screen aa = new PantallaPausa(p.getGame(), p);
+            Screen aa = new PantallaPausa(p);
             p.getGame().setScreen(aa);
         }
     }
@@ -118,20 +122,20 @@ public class GameLogic {
         if (p.getVidas() <= 0) {
             if (p.getPuntaje() > p.getGame().getHighScore())
             	p.getGame().setHighScore(p.getPuntaje() );
-            Screen ss = new PantallaGameOver(p.getGame());
+            Screen ss = new PantallaGameOver();
             ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
             p.getGame().setScreen(ss);
             p.dispose();
         }
     }
-    
+
     public void verifyGameComplete(ArrayList<BlockDefinitive> blocks) {
     	if (blocks.isEmpty())
         	levelComplete();
     }
 
     public void levelComplete(){
-            Screen aa = new PantallaNivelSuperado(p.getGame(), p.getNivel(), p.getPuntaje(), p.getVidas());
+            Screen aa = new PantallaNivelSuperado(p.getNivel(), p.getPuntaje(), p.getVidas());
             p.getGame().setScreen(aa);
             p.dispose();
     }
@@ -152,7 +156,7 @@ public class GameLogic {
         }
         return false;
     }
-    
+
     public void verifyBallEffect() {
         if (p.getBall().getHasEffect()) {
         	p.setContBall(p.getContBall()+1);
@@ -186,7 +190,7 @@ public class GameLogic {
         	}
         }
     }
-    
+
     public void verifyPadEffect() {
         if (p.getPad().getHasEffect()) {
         	p.setContPad(p.getContPad()+1);
@@ -208,14 +212,14 @@ public class GameLogic {
         	}
         }
     }
-    
-    void drawsBlocks(ArrayList<BlockDefinitive> blocks) {
+
+    public void drawsBlocks(ArrayList<BlockDefinitive> blocks) {
     	for (BlockDefinitive b : blocks) {
         	createBlock(b);
         }
     }
-    
-    void blockState(ArrayList<BlockDefinitive> blocks) {
+
+    public void blockState(ArrayList<BlockDefinitive> blocks) {
     	for (int i = 0; i < blocks.size(); i++) {
             if (checkBlock(blocks.get(i))) {
             	blocks.remove(blocks.get(i));

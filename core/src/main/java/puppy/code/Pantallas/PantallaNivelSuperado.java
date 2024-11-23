@@ -1,27 +1,37 @@
-package puppy.code;
+package puppy.code.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import puppy.code.BlockBreakerGame;
+import puppy.code.Template;
 
-public class PantallaPausa implements Screen {
+public class PantallaNivelSuperado extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
-    private PantallaJuego pantalla;
-    private final String[] strOpciones = {"Volver", "Menu Principal"};
-    private int opcion = 0;
+    private SpriteBatch batch;
+    private Texture background;
+    //private PantallaJuego pantalla;
+    private int nivel;
+    private int puntaje;
+    private int vidas;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaPausa(BlockBreakerGame game, PantallaJuego pantalla) {
-        this.game = game;
+    public PantallaNivelSuperado(int nivel, int puntaje, int vidas) {
+        this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
-        this.pantalla = pantalla;
+        this.nivel = nivel;
+        this.puntaje = puntaje;
+        this.vidas = vidas;
+        batch = game.getBatch();
+        background = new Texture(Gdx.files.internal("Background04.png"));
     }
 
 
@@ -32,48 +42,42 @@ public class PantallaPausa implements Screen {
     public OrthographicCamera getCamera() {return camera;}
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
 
-    public PantallaJuego getPantalla() {return pantalla;}
-    public void setPantalla(PantallaJuego pantalla) {this.pantalla = pantalla;}
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+    protected void iniciar() {
+    	ScreenUtils.clear(0, 0, 0.2f, 1);
+
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
-        game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Pausa !!! ", 140, 700, 400, 1, true);
-
-        for (int i = 0; i < strOpciones.length; i++) {
-            if (i == opcion) {
-                game.getFont().setColor(Color.GOLD);
-                game.getFont().draw(game.getBatch(), "> " + strOpciones[i], 160, 400 - i * 50);
-            } else {
-                game.getFont().setColor(Color.WHITE);
-                game.getFont().draw(game.getBatch(), "  " + strOpciones[i], 160, 400 - i * 50);
-            }
-        }
-        game.getFont().setColor(Color.WHITE);
-        game.getBatch().end();
-
-        //Mover arriba abajo
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            opcion = (opcion == 0) ? 1: 0;
-        }
-
-        //Seleccionar opciones
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if (opcion == 0) { //volver
-                game.setScreen(pantalla);
-                dispose();
-            } else if (opcion == 1) { //menu
-                game.setScreen(new PantallaMenu(game));
-                dispose();
-            }
-        }
+        batch.setProjectionMatrix(camera.combined);
     }
+
+    protected void dibujar() {
+    	batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.end();
+
+        game.getBatch().begin();
+        game.getFont().draw(game.getBatch(), "Nivel Superado !!! ", 140, 600, 400, 1, true);
+        game.getFont().draw(game.getBatch(), "Presiona ENTER para continuar ...", 140, 400);
+        game.getBatch().end();
+    }
+
+    protected void actualizar() {
+    	if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            Screen ss = new PantallaJuego(nivel + 1, puntaje, vidas);
+            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+            game.setScreen(ss);
+            dispose();
+    	}
+    }
+
+    protected void finalizar() {}
+
+
 
     @Override
     public void show() {
@@ -104,4 +108,5 @@ public class PantallaPausa implements Screen {
     public void dispose() {
         // TODO Auto-generated method stub
     }
+
 }
