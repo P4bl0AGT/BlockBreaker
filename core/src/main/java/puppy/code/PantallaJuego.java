@@ -88,6 +88,7 @@ public class PantallaJuego implements Screen {
     public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
     public void setContBall(int contBall) {this.contBall = contBall;}
     public void setContPad(int contPad) {this.contPad = contPad;}
+    public void setPad(Paddle pad) {this.pad = pad;}
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */

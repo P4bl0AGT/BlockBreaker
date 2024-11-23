@@ -22,7 +22,7 @@ public class PantallaMenu implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
         batch = game.getBatch();
-        background = new Texture(Gdx.files.internal("Background02.png"));
+        background = new Texture(Gdx.files.internal("Background.png"));
     }
 
 

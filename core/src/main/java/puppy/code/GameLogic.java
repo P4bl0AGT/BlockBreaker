@@ -5,9 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 
 
-public class GameLogic {
+public class GameLogic{
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private PantallaJuego p;
+    
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -56,7 +57,10 @@ public class GameLogic {
     	 //if (p.getBall().getY()<0) {
         if (p.getBall().getY() < p.getPad().getY()) {
              p.setVidas(p.getVidas() - 1);
+             p.setContBall(0);
+             p.setContPad(0);
              p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO, 5, 7, true));
+             p.setPad(new Paddle(20,20,100,10));
          }
     }
 
@@ -100,26 +104,16 @@ public class GameLogic {
         	System.out.println(p.getContBall() / 60);
         	if ((p.getContBall() / 60) >= 10) {
         		if (p.getBall().getEffectSlowDownBall()) {
-        			p.getBall().setxSpeed(p.getBall().getxSpeed() * 2);
-        			p.getBall().setySpeed(p.getBall().getySpeed() * 2);
-        			p.getBall().setHasEffect(false);
-        			p.getBall().setEffectSlowDownBall(false);
+                   new SlowDownBall().remove(null, p.getBall());
         		}
         		if(p.getBall().getEffectSizeIncrease()) {
-        			p.getBall().setSize(15);
-        			p.getBall().setHasEffect(false);
-        			p.getBall().setEffectSizeIncrease(false);
+        			new BallSizeIncrease().remove(null, p.getBall());
         		}
          		if (p.getBall().getEffectFastDownBall()) {
-         			p.getBall().setxSpeed(p.getBall().getxSpeed() / 2);
-         			p.getBall().setySpeed(p.getBall().getySpeed() / 2);
-         			p.getBall().setHasEffect(false);
-         			p.getBall().setEffectFastDownBall(false);
+         			new FastDownBall().remove(null, p.getBall());
         		}
         		if(p.getBall().getEffectSizeDecreases()) {
-        			p.getBall().setSize(15);
-        			p.getBall().setHasEffect(false);
-        			p.getBall().setEffectSizeDecreases(false);
+        			new BallSizeDecreases().remove(null, p.getBall());
         		}
 
         		p.setContBall(0);
@@ -134,16 +128,11 @@ public class GameLogic {
         	System.out.println(p.getContPad() / 60);
         	if ((p.getContPad() / 60) >= 10) {
         		if (p.getPad().getEffectSizeIncrease()) {
-        			p.getPad().setWidth(p.getPad().getWidth() / 2);
-        			p.getPad().setHasEffect(false);
-        			p.getPad().setEffectSizeIncrease(false);
-
+        			new PaddleSizeIIncrease().remove(p.getPad(), null);
         		}
 
         		if(p.getPad().getEffectSizeDecreases()) {
-        			p.getPad().setWidth(p.getPad().getWidth() * 2);
-        			p.getPad().setHasEffect(false);
-        			p.getPad().setEffectSizeDecreases(false);
+        			new PaddleSizeDecreases().remove(p.getPad(), null);
         		}
         		p.setContPad(0);
         	}
