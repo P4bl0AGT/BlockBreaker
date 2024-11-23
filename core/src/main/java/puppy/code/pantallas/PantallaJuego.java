@@ -1,4 +1,4 @@
-package puppy.code.Pantallas;
+package puppy.code.pantallas;
 
 import java.util.ArrayList;
 //import java.util.Random;
@@ -13,7 +13,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import puppy.code.*;
+import puppy.code.blocks.BlockDefinitive;
+import puppy.code.principal.BlockBreakerGame;
+import puppy.code.principal.GameLogic;
+import puppy.code.objetos.Paddle;
+import puppy.code.objetos.PingBall;
 
 
 public class PantallaJuego extends Template {
@@ -49,7 +53,7 @@ public class PantallaJuego extends Template {
         gameLogic = new GameLogic(this);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        camera.setToOrtho(false, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
 
         batch = game.getBatch();
         font = game.getFont();
@@ -58,9 +62,9 @@ public class PantallaJuego extends Template {
 
         shape = new ShapeRenderer();
 
-        int ancho = BlockBreakerGame.ANCHO_PLATAFORMA_PREDETERMINADO;
-        int alto = BlockBreakerGame.ALTO_PLATAFORMA_PREDETERMINADO;
-        int radio = BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO;
+        int ancho = BlockBreakerGame.DFLT_ANCHO_PLATAFORMA;
+        int alto = BlockBreakerGame.DFLT_ALTO_PLATAFORMA;
+        int radio = BlockBreakerGame.DFLT_RADIO_PELOTA;
 
         int xPelota = Gdx.graphics.getWidth() / 2;
         int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
@@ -107,7 +111,7 @@ public class PantallaJuego extends Template {
     }
 
     protected void dibujar() {
-        batch.draw(background, 0, backgroundY, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, 4*BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.draw(background, 0, backgroundY, BlockBreakerGame.DFLT_ANCHO_PANTALLA, 4*BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
         pad.dibujar(shape);
         ball.dibujar(shape);

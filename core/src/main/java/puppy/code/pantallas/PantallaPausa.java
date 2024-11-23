@@ -1,12 +1,14 @@
-package puppy.code.Pantallas;
+package puppy.code.pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import puppy.code.BlockBreakerGame;
+import puppy.code.principal.BlockBreakerGame;
 
 public class PantallaPausa implements Screen {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
@@ -15,14 +17,18 @@ public class PantallaPausa implements Screen {
     private PantallaJuego pantalla;
     private final String[] strOpciones = {"Volver", "Menu Principal"};
     private int opcion = 0;
+    private Texture background;
+    private SpriteBatch batch;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public PantallaPausa(PantallaJuego pantalla) {
         this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        camera.setToOrtho(false, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
         this.pantalla = pantalla;
+        batch = game.getBatch();
+        background = new Texture(Gdx.files.internal("Background01.png"));
     }
 
 
@@ -41,6 +47,11 @@ public class PantallaPausa implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
+
+        batch.begin();
+        batch.draw(background, 0, 0, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
+        batch.end();
+
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 

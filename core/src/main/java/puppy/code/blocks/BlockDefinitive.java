@@ -1,7 +1,9 @@
-package puppy.code;
+package puppy.code.blocks;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
+import puppy.code.objetos.Paddle;
+import puppy.code.objetos.PingBall;
 
 import java.util.Random;
 

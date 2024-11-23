@@ -1,4 +1,7 @@
-package puppy.code;
+package puppy.code.blocks;
+
+import puppy.code.objetos.Paddle;
+import puppy.code.objetos.PingBall;
 
 import java.util.Random;
 

@@ -1,8 +1,11 @@
-package puppy.code;
+package puppy.code.power;
 
-public class SlowDownBall implements PowerUp{
+import puppy.code.objetos.Paddle;
+import puppy.code.objetos.PingBall;
 
-	
+public class SlowDownBall implements PowerUp {
+
+
 	 public void apply(Paddle paddle, PingBall ball) {
 		 if(!ball.getHasEffect()) {
 		 	ball.setxSpeed(ball.getxSpeed() / 2);

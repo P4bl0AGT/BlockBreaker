@@ -1,4 +1,4 @@
-package puppy.code.Pantallas;
+package puppy.code.pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import puppy.code.BlockBreakerGame;
-import puppy.code.Template;
+import puppy.code.principal.BlockBreakerGame;
 
 
 public class PantallaGameOver extends Template {
@@ -22,7 +21,7 @@ public class PantallaGameOver extends Template {
     public PantallaGameOver() {
         this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        camera.setToOrtho(false, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch = game.getBatch();
         background = new Texture(Gdx.files.internal("Background03.png"));
     }
@@ -59,7 +58,7 @@ public class PantallaGameOver extends Template {
 
     protected void dibujar() {
     	 batch.begin();
-         batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+         batch.draw(background, 0, 0, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
          batch.end();
 
          game.getBatch().begin();
@@ -70,8 +69,8 @@ public class PantallaGameOver extends Template {
 
     protected void actualizar() {
     	 if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
-             Screen ss = new PantallaJuego(BlockBreakerGame.NIVEL_PREDETERMINADO, BlockBreakerGame.PUNTAJE_PREDETERMINADO, BlockBreakerGame.VIDAS_PREDETERMINADO);
-             ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+             Screen ss = new PantallaJuego(BlockBreakerGame.DFLT_NIVEL, BlockBreakerGame.DFLT_PUNTAJE, BlockBreakerGame.DFLT_VIDAS);
+             ss.resize(BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
              game.setScreen(ss);
              dispose();
          }

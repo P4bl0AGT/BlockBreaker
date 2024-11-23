@@ -1,10 +1,11 @@
-package puppy.code;
+package puppy.code.objetos;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.audio.Sound;
+import puppy.code.blocks.BlockDefinitive;
 
 import java.util.Random;
 

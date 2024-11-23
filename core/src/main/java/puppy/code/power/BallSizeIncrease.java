@@ -1,7 +1,10 @@
-package puppy.code;
+package puppy.code.power;
 
-public class BallSizeIncrease implements PowerUp{
-		
+import puppy.code.objetos.Paddle;
+import puppy.code.objetos.PingBall;
+
+public class BallSizeIncrease implements PowerUp {
+
 	public void apply(Paddle paddle, PingBall ball) {
 		if(!ball.getHasEffect()) {
 			ball.setSize(ball.getSize() * 2);

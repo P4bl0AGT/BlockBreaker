@@ -1,4 +1,4 @@
-package puppy.code.Pantallas;
+package puppy.code.pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,31 +7,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import puppy.code.BlockBreakerGame;
-import puppy.code.Template;
+import puppy.code.principal.BlockBreakerGame;
 
-public class PantallaNivelSuperado extends Template {
+public class PantallaMenu extends Template {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private BlockBreakerGame game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private Texture background;
-    //private PantallaJuego pantalla;
-    private int nivel;
-    private int puntaje;
-    private int vidas;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PantallaNivelSuperado(int nivel, int puntaje, int vidas) {
+    public PantallaMenu() {
         this.game = BlockBreakerGame.getInstancia();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
-        this.nivel = nivel;
-        this.puntaje = puntaje;
-        this.vidas = vidas;
+        camera.setToOrtho(false, 1200, 800);
         batch = game.getBatch();
-        background = new Texture(Gdx.files.internal("Background04.png"));
+        background = new Texture(Gdx.files.internal("Background.png"));
     }
 
 
@@ -43,41 +35,45 @@ public class PantallaNivelSuperado extends Template {
     public void setCamera(OrthographicCamera camera) {this.camera = camera;}
 
 
-
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-    @Override
     protected void iniciar() {
     	ScreenUtils.clear(0, 0, 0.2f, 1);
-
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
-
         batch.setProjectionMatrix(camera.combined);
     }
 
     protected void dibujar() {
     	batch.begin();
-        batch.draw(background, 0, 0, BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        batch.draw(background, 0, 0, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Nivel Superado !!! ", 140, 600, 400, 1, true);
-        game.getFont().draw(game.getBatch(), "Presiona ENTER para continuar ...", 140, 400);
+        game.getFont().draw(game.getBatch(), "Bienvenido a Block Breaker !", 140, 600);
+
+        game.getFont().draw(game.getBatch(), "Teclas", 140, 500);
+        game.getFont().draw(game.getBatch(), "[<-] ó [A] Mover Izquierda", 180, 450);
+        game.getFont().draw(game.getBatch(), "[->] ó [D] Mover Derecha", 180, 400);
+        game.getFont().draw(game.getBatch(), "[ESPACIO] Lanzar pelota", 180, 350);
+        game.getFont().draw(game.getBatch(), "[ESC] Poner Pausa", 180, 300);
+
+        game.getFont().draw(game.getBatch(), "  Presiona cualquier tecla para comenzar ...", 140, 200);
+
         game.getBatch().end();
     }
 
     protected void actualizar() {
-    	if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            Screen ss = new PantallaJuego(nivel + 1, puntaje, vidas);
-            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            Screen ss = new PantallaJuego(BlockBreakerGame.DFLT_NIVEL, BlockBreakerGame.DFLT_PUNTAJE, BlockBreakerGame.DFLT_VIDAS);
+            ss.resize(BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
             game.setScreen(ss);
             dispose();
-    	}
+        }
     }
 
-    protected void finalizar() {}
+    protected void finalizar() {
 
-
+    }
 
     @Override
     public void show() {
@@ -110,3 +106,5 @@ public class PantallaNivelSuperado extends Template {
     }
 
 }
+
+

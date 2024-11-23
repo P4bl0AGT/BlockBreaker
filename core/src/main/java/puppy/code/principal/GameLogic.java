@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.principal;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,16 +7,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import puppy.code.Pantallas.PantallaGameOver;
-import puppy.code.Pantallas.PantallaJuego;
-import puppy.code.Pantallas.PantallaNivelSuperado;
-import puppy.code.Pantallas.PantallaPausa;
+import puppy.code.blocks.BadBlock;
+import puppy.code.blocks.BlockDefinitive;
+import puppy.code.blocks.GoodBlock;
+import puppy.code.blocks.NormalBlock;
+import puppy.code.objetos.Paddle;
+import puppy.code.pantallas.PantallaGameOver;
+import puppy.code.pantallas.PantallaJuego;
+import puppy.code.pantallas.PantallaNivelSuperado;
+import puppy.code.pantallas.PantallaPausa;
+import puppy.code.objetos.PingBall;
+import puppy.code.power.*;
 
 
 public class GameLogic{
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
     private PantallaJuego p;
-    
+
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -117,9 +124,13 @@ public class GameLogic{
              p.setVidas(p.getVidas() - 1);
              p.setContBall(0);
              p.setContPad(0);
-             p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.RADIO_PELOTA_PREDETERMINADO, 5, 7, true));
-             p.setPad(new Paddle(20,20,150,10));
-         }
+             p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.DFLT_RADIO_PELOTA, 5, 7, true));
+
+             int ancho = BlockBreakerGame.DFLT_ANCHO_PLATAFORMA;
+             int alto = BlockBreakerGame.DFLT_ALTO_PLATAFORMA;
+             int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
+             p.setPad(new Paddle(xPlataforma,40,ancho,alto));
+        }
     }
 
     public void verifyGameOver() {
@@ -127,7 +138,7 @@ public class GameLogic{
             if (p.getPuntaje() > p.getGame().getHighScore())
             	p.getGame().setHighScore(p.getPuntaje() );
             Screen ss = new PantallaGameOver();
-            ss.resize(BlockBreakerGame.ANCHO_PANTALLA_PREDETERMINADO, BlockBreakerGame.ALTO_PANTALLA_PREDETERMINADO);
+            ss.resize(BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
             p.getGame().setScreen(ss);
             p.dispose();
         }
