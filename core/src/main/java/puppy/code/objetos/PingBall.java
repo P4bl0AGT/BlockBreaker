@@ -114,18 +114,6 @@ public class PingBall implements Sprite {
         return currentStrategy;
     }
 
-    public void applyEffect() {
-        if (currentStrategy != null) {
-            currentStrategy.apply(balls);
-        }
-    }
-
-    public void removeEffect() {
-        if (currentStrategy != null) {
-            currentStrategy.remove(balls);  // Asegúrate de que este método existe y hace lo correcto
-            currentStrategy = null;  // Restablecer el poder
-        }
-    }
     
     public boolean estaQuieto() {
         return estaQuieto;

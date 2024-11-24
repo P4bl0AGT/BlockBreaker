@@ -44,17 +44,6 @@ public class Paddle implements Sprite {
         return currentStrategy;
     }
 
-    public void applyEffect() {
-        if (currentStrategy != null) {
-            currentStrategy.apply(this);
-        }
-    }
-
-    public void removeEffect() {
-        if (currentStrategy != null) {
-            currentStrategy.remove(this);
-        }
-    }
 
 
     public int getX() {

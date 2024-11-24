@@ -16,7 +16,7 @@ public class PaddleSizeDecreases implements PaddleStrategy {
 	}
 
 	public void remove(Paddle paddle) {
-		paddle.setWidth(paddle.getWidth() * 2);
+		paddle.setWidth(150);
 		paddle.setHasEffect(false);
 		paddle.setEffectSizeDecreases(false);
 		
