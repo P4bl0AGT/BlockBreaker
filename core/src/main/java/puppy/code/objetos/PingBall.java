@@ -34,7 +34,7 @@ public class PingBall implements Sprite {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public PingBall(int x, int y, int size, int xSpeed, int ySpeed, boolean iniciaQuieto) {
+    public PingBall(int x, int y, int size, int xSpeed, int ySpeed, boolean iniciaQuieto,BallStrategy currentStrategy) {
         this.x = x;
         this.y = y;
         this.size = size;
@@ -44,6 +44,7 @@ public class PingBall implements Sprite {
         boing = Gdx.audio.newSound(Gdx.files.internal("Boing.mp3"));
         breaking = Gdx.audio.newSound(Gdx.files.internal("Break.mp3"));
         balls = new ArrayList<PingBall>();
+        this.currentStrategy = currentStrategy;
     }
 
 

@@ -25,12 +25,13 @@ public class Paddle implements Sprite {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public Paddle(int x, int y, int ancho, int alto) {
+    public Paddle(int x, int y, int ancho, int alto, PaddleStrategy currentStrategy) {
         this.x = x;
         this.y = y;
         width = ancho;
         height = alto;
         escudo = DFLT_ESCUDO;
+        this.currentStrategy = currentStrategy;
     }
 
 
