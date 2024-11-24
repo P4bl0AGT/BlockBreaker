@@ -1,31 +1,37 @@
 package puppy.code.torretas;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class EnemyBuilder implements Builder {
-    private EnemyType tipo;
-    private Texture tx;
-    private int vida;
-    private int velocidad;
-    private Bullet bala;
+    /* = = = = = = = = = = = = PRODUCTO  = = = = = = = = = = = = = */
+    private Enemy producto;
+
+
+    /* = = = = = = = = = = = = SET = = = = = = = = = = = = = */
+    @Override
+    public void setTipo(EnemyType tipo) {producto.setTipo(tipo);}
 
     @Override
-    public void setTipo(EnemyType tipo) {this.tipo = tipo;}
+    public void setVida(int vida) {producto.setVida(vida);}
 
     @Override
-    public void setVida(int vida) {this.vida = vida;}
+    public void setSprite(Sprite spr){producto.setSprite(spr);}
 
     @Override
-    public void setTexture(Texture tx){this.tx = tx;}
+    public void setVelocidad(int velocidad) {producto.setVelocidad(velocidad);}
 
     @Override
-    public void setVelocidad(int velocidad) {this.velocidad = velocidad; }
+    public void setBala(Bullet bala) {producto.setBalaEnemy(bala);}
+
+
+    /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
+    @Override
+    public void reset(){
+        this.producto = new Enemy();
+    }
 
     @Override
-    public void setBala(Bullet bala) {this.bala = bala;}
-
-
-    public Enemy getEnemy() {
-        return new Enemy(tipo, tx, vida, velocidad, bala);
+    public Enemy getProducto() {
+        return producto;
     }
 }

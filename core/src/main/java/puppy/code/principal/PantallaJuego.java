@@ -1,7 +1,6 @@
 package puppy.code.principal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 //import java.util.Random;
 
@@ -15,7 +14,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
 import puppy.code.blocks.BlockDefinitive;
 import puppy.code.pantallas.PantallaPausa;
@@ -25,7 +23,6 @@ import puppy.code.objetos.PingBall;
 import puppy.code.torretas.Director;
 import puppy.code.torretas.Enemy;
 import puppy.code.torretas.EnemyBuilder;
-import puppy.code.torretas.EnemyType;
 
 
 public class PantallaJuego extends Template {
@@ -145,11 +142,11 @@ public class PantallaJuego extends Template {
         	ball.dibujar(shape);
         }
         gameLogic.dibujarTextos();
-        
+
     }
 
     protected void actualizar() {
-    	
+
         //Mover fondo
         this.moverFondo();
 
@@ -205,7 +202,7 @@ public class PantallaJuego extends Template {
     }
 
     public void moverFondo(){
-        backgroundY -= 2;
+        backgroundY -= 1;
         if (backgroundY <= -background.getWidth()-1100) {
             backgroundY = 0;
         }
@@ -254,20 +251,20 @@ public class PantallaJuego extends Template {
             int tipo = rand.nextInt(3);
 
             if (tipo == 0) {
-                director.createEnemy1(builder);
-                Enemy enemigo1 = builder.getEnemy();
+                director.buildEnemyType1(builder);
+                Enemy enemigo1 = builder.getProducto();
                 enemigo1.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
                 listaEnemigos.add(enemigo1);
             }
             else if (tipo == 1) {
-                director.createEnemy2(builder);
-                Enemy enemigo2 = builder.getEnemy();
+                director.buildEnemyType2(builder);
+                Enemy enemigo2 = builder.getProducto();
                 enemigo2.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
                 listaEnemigos.add(enemigo2);
             }
             else if (tipo == 2) {
-                director.createEnemy3(builder);
-                Enemy enemigo3 = builder.getEnemy();
+                director.buildEnemyType3(builder);
+                Enemy enemigo3 = builder.getProducto();
                 enemigo3.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
                 listaEnemigos.add(enemigo3);
             }
@@ -303,14 +300,6 @@ public class PantallaJuego extends Template {
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-    }
-
-    public int[][] getMatrizEnemigos() {
-        return matrizEnemigos;
-    }
-
-    public void setMatrizEnemigos(int[][] matrizEnemigos) {
-        this.matrizEnemigos = matrizEnemigos;
     }
 }
 

@@ -14,8 +14,8 @@ public class Enemy {
     private Sprite spr;
     private int vida;
     private int velocidad;
-    private Array<Bullet> balas;
     private Bullet balaEnemy;
+    private final Array<Bullet> balas;
 
 
     /* = = = = = = = = = = = = CONSTANTES  = = = = = = = = = = = = = */
@@ -25,15 +25,26 @@ public class Enemy {
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
-    public Enemy(EnemyType tipo, Texture tx, int vida, int velocidad, Bullet balaEnemy) {
+    public Enemy(EnemyType tipo, Sprite spr, int vida, int velocidad, Bullet balaEnemy) {
         this.tipo = tipo;
-        this.spr = new Sprite(tx);
+        this.spr = new Sprite(spr);
         this.spr.setBounds(400, DFLT_POS_Y, DFLT_ANCHO, DFLT_ALTO);
         this.vida = vida;
         this.velocidad = velocidad;
         balas = new Array<>();
         this.balaEnemy = balaEnemy;
     }
+
+    public Enemy() {
+        this.tipo = null;
+        this.spr = null;
+        //this.spr.setBounds(400, DFLT_POS_Y, DFLT_ANCHO, DFLT_ALTO);
+        this.vida = 0;
+        this.velocidad = 0;
+        balas = new Array<>();
+        this.balaEnemy = null;
+    }
+
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
     public EnemyType getTipo() {
@@ -44,7 +55,7 @@ public class Enemy {
     }
 
     public Sprite getSprite() {return spr;}
-    public void setSpr(Sprite spr) {this.spr = spr;}
+    public void setSprite(Sprite spr) {this.spr = spr;}
 
     public int getVida() {
         return vida;

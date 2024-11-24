@@ -19,7 +19,7 @@ public class Bullet {
         spr.setBounds(x, y, ancho, alto);
         this.velocidad = velocidad;
         this.frecuencia = frecuencia;
-        this.contador = 0;
+        this.contador = 200;
         this.golpe = golpe;
     }
 
