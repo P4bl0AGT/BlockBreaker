@@ -15,7 +15,8 @@ public class MultiBall implements BallStrategy{
 		    originalBall.getSize(), 
 		    originalBall.getxSpeed() + 2, 
 		    originalBall.getySpeed() - 2, 
-		    false
+		    false,
+		    null
 		);
 
 		PingBall ball2 = new PingBall(
@@ -24,7 +25,8 @@ public class MultiBall implements BallStrategy{
 		    originalBall.getSize(), 
 		    originalBall.getxSpeed() - 2, 
 		    originalBall.getySpeed() + 2, 
-		    false
+		    false,
+		    null
 		);
 
 		balls.add(ball1);

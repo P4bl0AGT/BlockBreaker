@@ -84,9 +84,9 @@ public class PantallaJuego extends Template {
         int xPelota = Gdx.graphics.getWidth() / 2;
         int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
 
-        aux = new PingBall(xPelota, 41, radio, 5, 7, true);
+        aux = new PingBall(xPelota, 41, radio, 5, 7, true,null);
         balls.add(aux);
-        pad = new Paddle(xPlataforma, 40, ancho, alto);
+        pad = new Paddle(xPlataforma, 40, ancho, alto,null);
 
         //background = new Texture(Gdx.files.internal("temp.jpg"));
         backgroundHandler = new BackgroundHandler("temp.jpg");

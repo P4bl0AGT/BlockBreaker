@@ -139,14 +139,14 @@ public class GameLogic{
                
 
                     // Agregar una nueva bola
-                    PingBall aux = new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.DFLT_RADIO_PELOTA, 5, 7, true);
+                    PingBall aux = new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.DFLT_RADIO_PELOTA, 5, 7, true,null);
                     balls.add(aux);
 
                     // Reiniciar plataforma
                     int ancho = BlockBreakerGame.DFLT_ANCHO_PLATAFORMA;
                     int alto = BlockBreakerGame.DFLT_ALTO_PLATAFORMA;
                     int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
-                    p.setPad(new Paddle(xPlataforma, 40, ancho, alto));
+                    p.setPad(new Paddle(xPlataforma, 40, ancho, alto, null));
                 }
             }
         }
@@ -200,6 +200,7 @@ public class GameLogic{
 	                ball.getCurrentStrategy().remove(balls);
 	                p.setContBall(0);
 	                ball.setHasEffect(false); // Desactivar el efecto
+	                ball.setStrategy(null);
 	            }
 	        }
     	}
@@ -212,6 +213,7 @@ public class GameLogic{
                 p.getPad().getCurrentStrategy().remove(p.getPad());
                 p.setContPad(0);
                 p.getPad().setHasEffect(false); // Desactivar el efecto
+                p.getPad().setStrategy(null);
             }
         }
     }

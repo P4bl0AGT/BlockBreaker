@@ -20,7 +20,6 @@ public class GoodBlock extends BlockDefinitive {
     public GoodBlock(int x, int y, int width, int height) {
         super(x, y, width, height, new Random().nextInt(4));
 
-        
         this.powerUpsBalls = new ArrayList<>();
         this.powerUpsBalls.add(new BallSizeIncrease());
         this.powerUpsBalls.add(new SlowDownBall());  
