@@ -230,10 +230,6 @@ public class PingBall implements Sprite {
 
         return colisionX && colisionY;
     }
-    public void add(PingBall ball) {
-        if (ball != null) {
-            balls.add(ball);
-        }
-    }
+
 
 }
