@@ -34,6 +34,7 @@ public class PantallaJuego extends Template {
     private ShapeRenderer shape;
     private Texture background;
     private int backgroundY;
+    private BackgroundHandler backgroundHandler;
 
     private PingBall aux;
     private Paddle pad;
@@ -87,7 +88,8 @@ public class PantallaJuego extends Template {
         balls.add(aux);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
 
-        background = new Texture(Gdx.files.internal("temp.jpg"));
+        //background = new Texture(Gdx.files.internal("temp.jpg"));
+        backgroundHandler = new BackgroundHandler("temp.jpg");
         backgroundY = 0;
 
         listaEnemigos = new Array<>();
@@ -133,7 +135,8 @@ public class PantallaJuego extends Template {
     }
 
     protected void dibujar() {
-        batch.draw(background, 0, backgroundY, BlockBreakerGame.DFLT_ANCHO_PANTALLA, 4*BlockBreakerGame.DFLT_ALTO_PANTALLA);
+        //batch.draw(background, 0, backgroundY, BlockBreakerGame.DFLT_ANCHO_PANTALLA, 4*BlockBreakerGame.DFLT_ALTO_PANTALLA);
+        backgroundHandler.dibujar(batch, BlockBreakerGame.DFLT_ANCHO_PANTALLA, BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
         pad.dibujar(shape);batch.begin();
         for (int i = 0; i < listaEnemigos.size; i++){
@@ -151,7 +154,8 @@ public class PantallaJuego extends Template {
     protected void actualizar() {
 
         //Mover fondo
-        gameLogic.moverFondo();
+        //gameLogic.moverFondo();
+        backgroundHandler.moverFondo();
 
         //Crear enemigo con patron Builder
         crearEnemigo();

@@ -19,7 +19,6 @@ import puppy.code.pantallas.PantallaGameOver;
 import puppy.code.pantallas.PantallaNivelSuperado;
 import puppy.code.pantallas.PantallaPausa;
 import puppy.code.objetos.PingBall;
-import puppy.code.power.*;
 import puppy.code.torretas.Enemy;
 
 
