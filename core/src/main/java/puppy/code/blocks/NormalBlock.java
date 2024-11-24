@@ -3,6 +3,7 @@ package puppy.code.blocks;
 import puppy.code.objetos.Paddle;
 import puppy.code.objetos.PingBall;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class NormalBlock extends BlockDefinitive {
@@ -20,11 +21,10 @@ public class NormalBlock extends BlockDefinitive {
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     @Override
-    public void applyEfect(Paddle paddle, PingBall ball) {
+    public void applyEfect(Paddle paddle, ArrayList<PingBall> balls) {
         if (isDestroyed()) {
             //System.out.println("BLOQUE NORMAL");
         }
     }
 
 }
-

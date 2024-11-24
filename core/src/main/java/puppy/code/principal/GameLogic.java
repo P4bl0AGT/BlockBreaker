@@ -1,6 +1,7 @@
 package puppy.code.principal;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -90,14 +91,19 @@ public class GameLogic{
     }
 
     // monitorear inicio del juego //
-    public void monitorStartup(){
-
-        if (p.getBall().estaQuieto()) {
-        	p.getBall().setXY(this.ballXinPaddle(), this.ballYinPaddle());
-        	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-        		p.getBall().setEstaQuieto(false);
-        }else
-        	p.getBall().actualizar();
+    public void monitorStartup(ArrayList<PingBall>balls){
+    	
+    	for (PingBall ball:balls) {
+	        if (ball.estaQuieto()) {
+	        	ball.setXY(this.ballXinPaddle(), this.ballYinPaddle());
+	        	if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+	        		ball.setEstaQuieto(false);
+	        		
+	        	}
+	        }
+	        else
+        		ball.actualizar();
+    	}
     }
 
     public int ballXinPaddle() {
@@ -118,20 +124,32 @@ public class GameLogic{
         }
     }
 
-    public void underPlataform(){
-    	 //if (p.getBall().getY()<0) {
-        if (p.getBall().getY() < p.getPad().getY()) {
-             p.setVidas(p.getVidas() - 1);
-             p.setContBall(0);
-             p.setContPad(0);
-             p.setBall(new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.DFLT_RADIO_PELOTA, 5, 7, true));
+    public void underPlataform(ArrayList<PingBall> balls) {
+        for (int i = 0; i < balls.size(); i++) {
+            if (balls.get(i).getY() < p.getPad().getY()) {
+                balls.remove(i);
 
-             int ancho = BlockBreakerGame.DFLT_ANCHO_PLATAFORMA;
-             int alto = BlockBreakerGame.DFLT_ALTO_PLATAFORMA;
-             int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
-             p.setPad(new Paddle(xPlataforma,40,ancho,alto));
+                // Resetear estado de la bola y efectos activos
+                if (balls.size() == 0) {
+                    p.setVidas(p.getVidas() - 1);
+                    p.setContBall(0);
+                    p.setContPad(0);
+               
+
+                    // Agregar una nueva bola
+                    PingBall aux = new PingBall(this.ballXinPaddle(), this.ballYinPaddle(), BlockBreakerGame.DFLT_RADIO_PELOTA, 5, 7, true);
+                    balls.add(aux);
+
+                    // Reiniciar plataforma
+                    int ancho = BlockBreakerGame.DFLT_ANCHO_PLATAFORMA;
+                    int alto = BlockBreakerGame.DFLT_ALTO_PLATAFORMA;
+                    int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
+                    p.setPad(new Paddle(xPlataforma, 40, ancho, alto));
+                }
+            }
         }
     }
+
 
     public void verifyGameOver() {
         if (p.getVidas() <= 0) {
@@ -155,75 +173,64 @@ public class GameLogic{
             p.dispose();
     }
 
-    public void createBlock(BlockDefinitive b) {
+    public void createBlock(BlockDefinitive b, ArrayList<PingBall>balls) {
+    	
     	b.draw(p.getShape());
-        p.getBall().checkCollision(b);
+    	for(PingBall ball:balls) {
+    		ball.checkCollision(b);
+    	}
     }
 
-    public boolean checkBlock(BlockDefinitive b) {
+    public boolean checkBlock(BlockDefinitive b, PingBall ball, ArrayList<PingBall>balls) {
         if (b.isDestroyed()) {
             p.setPuntaje(p.getPuntaje()+1);
-            if (!p.getBall().getHasEffect())
-                b.applyEfect(p.getPad(), p.getBall());  // Aplica el efecto del bloque
-            if (!p.getPad().getHasEffect())
-                b.applyEfect(p.getPad(), p.getBall());  // Aplica el efecto del bloque
+            b.applyEfect(p.getPad(), balls);
             return true;
         }
-        return false;
+    	return false;
     }
 
-    public void verifyBallEffect() {
-        if (p.getBall().getHasEffect()) {
-        	p.setContBall(p.getContBall()+1);
-        	System.out.println(p.getContBall() / 60);
-        	if ((p.getContBall() / 60) >= 10) {
-        		if (p.getBall().getEffectSlowDownBall()) {
-                   new SlowDownBall().remove(null, p.getBall());
-        		}
-        		if(p.getBall().getEffectSizeIncrease()) {
-        			new BallSizeIncrease().remove(null, p.getBall());
-        		}
-         		if (p.getBall().getEffectFastDownBall()) {
-         			new FastDownBall().remove(null, p.getBall());
-        		}
-        		if(p.getBall().getEffectSizeDecreases()) {
-        			new BallSizeDecreases().remove(null, p.getBall());
-        		}
-
-        		p.setContBall(0);
-
-        	}
-        }
+    public void verifyBallEffect(ArrayList<PingBall> balls) {
+    	for (PingBall ball:balls) {
+	        if (ball.getHasEffect()) {
+	            p.setContBall(p.getContBall() + 1);
+	            if (p.getContBall() >= 600) {
+	                ball.getCurrentStrategy().remove(balls);
+	                p.setContBall(0);
+	                ball.setHasEffect(false); // Desactivar el efecto
+	            }
+	        }
+    	}
     }
 
     public void verifyPadEffect() {
         if (p.getPad().getHasEffect()) {
-        	p.setContPad(p.getContPad()+1);
-        	System.out.println(p.getContPad() / 60);
-        	if ((p.getContPad() / 60) >= 10) {
-        		if (p.getPad().getEffectSizeIncrease()) {
-        			new PaddleSizeIIncrease().remove(p.getPad(), null);
-        		}
-
-        		if(p.getPad().getEffectSizeDecreases()) {
-        			new PaddleSizeDecreases().remove(p.getPad(), null);
-        		}
-        		p.setContPad(0);
-        	}
+            p.setContPad(p.getContPad() + 1);
+            if (p.getContPad() >= 600) {
+                p.getPad().getCurrentStrategy().remove(p.getPad());
+                p.setContPad(0);
+                p.getPad().setHasEffect(false); // Desactivar el efecto
+            }
         }
     }
 
-    public void drawsBlocks(ArrayList<BlockDefinitive> blocks) {
+
+
+    public void drawsBlocks(ArrayList<BlockDefinitive> blocks, ArrayList<PingBall>balls) {
     	for (BlockDefinitive b : blocks) {
-        	createBlock(b);
+        	createBlock(b, balls);
         }
     }
 
-    public void blockState(ArrayList<BlockDefinitive> blocks) {
-    	for (int i = 0; i < blocks.size(); i++) {
-            if (checkBlock(blocks.get(i))) {
-            	blocks.remove(blocks.get(i));
-                i--;  // Ajusta el índice después de eliminar
+    public void blockState(ArrayList<BlockDefinitive> blocks, ArrayList<PingBall> balls) {
+        for (Iterator<BlockDefinitive> iterator = blocks.iterator(); iterator.hasNext(); ) {
+            BlockDefinitive block = iterator.next(); 
+            
+            for (PingBall ball : balls) {
+                if (checkBlock(block, ball, balls)) {
+                    iterator.remove();
+                    break;
+                }
             }
         }
     }

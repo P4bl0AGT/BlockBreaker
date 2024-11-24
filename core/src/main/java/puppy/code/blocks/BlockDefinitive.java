@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import puppy.code.objetos.Paddle;
 import puppy.code.objetos.PingBall;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class BlockDefinitive {
@@ -74,6 +75,5 @@ public abstract class BlockDefinitive {
     }
 
 
-    public abstract void applyEfect(Paddle paddle, PingBall ball);
+	public abstract void applyEfect(Paddle paddle, ArrayList<PingBall> balls);
 }
-

@@ -1,47 +1,48 @@
 package puppy.code.blocks;
 
 import puppy.code.power.BallSizeIncrease;
-import puppy.code.power.PaddleSizeIIncrease;
-import puppy.code.power.PowerUp;
 import puppy.code.power.SlowDownBall;
+import puppy.code.power.PaddleSizeIIncrease;
+import puppy.code.power.BallStrategy;
+import puppy.code.power.MultiBall;
+import puppy.code.power.PaddleStrategy;
 import puppy.code.objetos.Paddle;
 import puppy.code.objetos.PingBall;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GoodBlock extends BlockDefinitive {
-    /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
-    /*private boolean isMultiBalls = false;*/
-	private List<PowerUp> powerUps;
 
+    private ArrayList<BallStrategy> powerUpsBalls;
+    private ArrayList<PaddleStrategy> powerUpsPaddle;
 
-    /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public GoodBlock(int x, int y, int width, int height) {
-        // Genera una resistencia aleatoria entre 2 y 5 para un bloque bueno
         super(x, y, width, height, new Random().nextInt(4));
-        this.powerUps = new ArrayList<>();
-        this.powerUps.add(new PaddleSizeIIncrease());
-        this.powerUps.add(new BallSizeIncrease());
-        this.powerUps.add(new SlowDownBall());
+
+        
+        this.powerUpsBalls = new ArrayList<>();
+        this.powerUpsBalls.add(new BallSizeIncrease());
+        this.powerUpsBalls.add(new SlowDownBall());  
+        this.powerUpsBalls.add(new MultiBall());
+  
+
+        this.powerUpsPaddle = new ArrayList<>();
+        this.powerUpsPaddle.add(new PaddleSizeIIncrease());
     }
 
-
-    /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-
-
-    /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
-
-
-
-    /* public void multiBalls() {*/
-
-
-    @Override
-    public void applyEfect(Paddle paddle, PingBall ball) {
-            PowerUp chosenPowerUp = powerUps.get(new Random().nextInt(powerUps.size()));
-            chosenPowerUp.apply(paddle, ball);
+    public void applyEfect(Paddle paddle, ArrayList<PingBall> balls) {
+        if (new Random().nextBoolean()) {
+            
+            PaddleStrategy chosenPaddleStrategy = powerUpsPaddle.get(new Random().nextInt(powerUpsPaddle.size()));
+            chosenPaddleStrategy.apply(paddle);  // Aplicar el efecto al paddle
+            paddle.setStrategy(chosenPaddleStrategy);
+        } else {
+            BallStrategy chosenBallStrategy = powerUpsBalls.get(new Random().nextInt(powerUpsBalls.size()));
+            chosenBallStrategy.apply(balls);  // Aplicar el efecto a cada bola
+            for(PingBall ball:balls)
+            	ball.setStrategy(chosenBallStrategy);
+            
         }
-
+    }
 }

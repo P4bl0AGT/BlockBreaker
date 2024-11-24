@@ -6,13 +6,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.audio.Sound;
 import puppy.code.blocks.BlockDefinitive;
+import puppy.code.power.BallStrategy;
 import puppy.code.torretas.Enemy;
 import puppy.code.torretas.Bullet;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PingBall implements Sprite {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
+	private ArrayList<PingBall> balls;
     private int x;
     private int y;
     private int size;
@@ -27,6 +30,7 @@ public class PingBall implements Sprite {
     private boolean effectSlowDownBall = false;
     private boolean effectSizeDecreases = false;
     private boolean effectFastDownBall = false;
+    private BallStrategy currentStrategy;
 
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
@@ -39,6 +43,7 @@ public class PingBall implements Sprite {
         estaQuieto = iniciaQuieto;
         boing = Gdx.audio.newSound(Gdx.files.internal("Boing.mp3"));
         breaking = Gdx.audio.newSound(Gdx.files.internal("Break.mp3"));
+        balls = new ArrayList<PingBall>();
     }
 
 
@@ -100,6 +105,28 @@ public class PingBall implements Sprite {
 
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
+    
+    public void setStrategy(BallStrategy strategy) {
+        this.currentStrategy = strategy;
+    }
+    
+    public BallStrategy getCurrentStrategy() {
+        return currentStrategy;
+    }
+
+    public void applyEffect() {
+        if (currentStrategy != null) {
+            currentStrategy.apply(balls);
+        }
+    }
+
+    public void removeEffect() {
+        if (currentStrategy != null) {
+            currentStrategy.remove(balls);  // Asegúrate de que este método existe y hace lo correcto
+            currentStrategy = null;  // Restablecer el poder
+        }
+    }
+    
     public boolean estaQuieto() {
         return estaQuieto;
     }
@@ -213,6 +240,11 @@ public class PingBall implements Sprite {
         boolean colisionY = (yPelota + sizePelota >= yEnemigo) && (yPelota - sizePelota <= yEnemigo + sizeEnemigo);
 
         return colisionX && colisionY;
+    }
+    public void add(PingBall ball) {
+        if (ball != null) {
+            balls.add(ball);
+        }
     }
 
 }

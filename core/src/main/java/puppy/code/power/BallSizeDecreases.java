@@ -1,22 +1,29 @@
 package puppy.code.power;
 
-import puppy.code.objetos.Paddle;
+import java.util.ArrayList;
+
+
 import puppy.code.objetos.PingBall;
 
-public class BallSizeDecreases implements PowerUp {
+public class BallSizeDecreases implements BallStrategy {
 
-	public void apply(Paddle paddle, PingBall ball) {
-		if (!ball.getHasEffect()) {
-			ball.setSize(ball.getSize() / 2);
-	        ball.setHasEffect(true);
-	        ball.setEffectSizeDecreases(true);
-		}
-	}
+	public void apply(ArrayList<PingBall> balls) {
+		
+        for (PingBall ball : balls) {
+            if (!ball.getHasEffect()) {
+                ball.setSize(ball.getSize() / 2);   
+                ball.setHasEffect(true);           
+                ball.setEffectSizeDecreases(true);  
+            }
+        }
+    }
 
-	public void remove(Paddle paddle, PingBall ball) {
-		ball.setSize(15);
-		ball.setHasEffect(false);
-		ball.setEffectSizeDecreases(false);
-
-	}
+    @Override
+    public void remove(ArrayList<PingBall> balls) {
+        for (PingBall ball : balls) {
+	            ball.setSize(15);             
+	            ball.setHasEffect(false);    
+	            ball.setEffectSizeDecreases(false); 
+        }
+    }
 }

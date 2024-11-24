@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import puppy.code.power.PaddleStrategy;
 import puppy.code.torretas.Enemy;
 
 public class Paddle implements Sprite {
@@ -16,6 +18,7 @@ public class Paddle implements Sprite {
     private boolean hasEffect = false;
     private boolean effectSizeIncrease = false;
     private boolean effectSizeDecreases = false;
+    private PaddleStrategy currentStrategy;
 
     private int escudo;
     public static final int DFLT_ESCUDO = 5;
@@ -32,6 +35,27 @@ public class Paddle implements Sprite {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
+    
+    public void setStrategy(PaddleStrategy strategy) {
+        this.currentStrategy = strategy;
+    }
+    
+    public PaddleStrategy getCurrentStrategy() {
+        return currentStrategy;
+    }
+
+    public void applyEffect() {
+        if (currentStrategy != null) {
+            currentStrategy.apply(this);
+        }
+    }
+
+    public void removeEffect() {
+        if (currentStrategy != null) {
+            currentStrategy.remove(this);
+        }
+    }
+
 
     public int getX() {
         return x;

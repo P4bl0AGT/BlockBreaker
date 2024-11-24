@@ -38,9 +38,10 @@ public class PantallaJuego extends Template {
     private Texture background;
     private int backgroundY;
 
-    private PingBall ball;
+    private PingBall aux;
     private Paddle pad;
     private ArrayList<BlockDefinitive> blocks = new ArrayList<>();
+    private ArrayList<PingBall> balls = new ArrayList<>();
 
     private int vidas;
     private int puntaje;
@@ -85,7 +86,8 @@ public class PantallaJuego extends Template {
         int xPelota = Gdx.graphics.getWidth() / 2;
         int xPlataforma = Gdx.graphics.getWidth() / 2 - ancho / 2;
 
-        ball = new PingBall(xPelota, 41, radio, 5, 7, true);
+        aux = new PingBall(xPelota, 41, radio, 5, 7, true);
+        balls.add(aux);
         pad = new Paddle(xPlataforma, 40, ancho, alto);
 
         background = new Texture(Gdx.files.internal("temp.jpg"));
@@ -98,7 +100,7 @@ public class PantallaJuego extends Template {
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
-    public PingBall getBall(){return ball;}
+    public PingBall getBall(){return aux;}
     public Paddle getPad() {return pad;}
     public BlockBreakerGame getGame() {return game;}
     public int getVidas() {return vidas;}
@@ -112,7 +114,7 @@ public class PantallaJuego extends Template {
     public BitmapFont getFont() {return font;}
 
     public void setVidas(int vidas) {this.vidas = vidas;}
-    public void setBall(PingBall ball) {this.ball = ball;}
+    public void setBall(PingBall ball) {this.aux = aux;}
     public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
     public void setContBall(int contBall) {this.contBall = contBall;}
     public void setContPad(int contPad) {this.contPad = contPad;}
@@ -133,22 +135,21 @@ public class PantallaJuego extends Template {
     protected void dibujar() {
         batch.draw(background, 0, backgroundY, BlockBreakerGame.DFLT_ANCHO_PANTALLA, 4*BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
-
-        pad.dibujar(shape);
-        ball.dibujar(shape);
-        gameLogic.dibujarTextos();
-
-
-        batch.begin();
+        pad.dibujar(shape);batch.begin();
         for (int i = 0; i < listaEnemigos.size; i++){
             listaEnemigos.get(i).getSprite().draw(game.getBatch());
             listaEnemigos.get(i).dibujarBalas(game.getBatch());
-        }
+            }
         batch.end();
-
+        for(PingBall ball:balls) {
+        	ball.dibujar(shape);
+        }
+        gameLogic.dibujarTextos();
+        
     }
 
     protected void actualizar() {
+    	
         //Mover fondo
         this.moverFondo();
 
@@ -162,24 +163,26 @@ public class PantallaJuego extends Template {
         pad.actualizar();
 
         //Comprobar colision pelota-pad
-        ball.checkCollision(pad);
+        for(PingBall ball:balls) {
+    		ball.checkCollision(pad);
+    	}
 
         // monitorear inicio del juego
-        gameLogic.monitorStartup();
+        gameLogic.monitorStartup(balls);
         //Monitorear pausa
         gameLogic.monitorPausee();
         //verificar si se fue la bola x abajo
-        gameLogic.underPlataform();
+        gameLogic.underPlataform(balls);
         // verificar game over
         gameLogic.verifyGameOver();
         // verificar si el nivel se terminó
         gameLogic.verifyGameComplete(blocks);
         //dibujar bloques
-        gameLogic.drawsBlocks(blocks);
+        gameLogic.drawsBlocks(blocks,balls);
         // actualizar estado de los bloques
-        gameLogic.blockState(blocks);
+        gameLogic.blockState(blocks,balls);
         //verificar si la bola tiene efecto
-        gameLogic.verifyBallEffect();
+        gameLogic.verifyBallEffect(balls);
         //verificar si la plataforma tiene efecto
         gameLogic.verifyPadEffect();
     }
@@ -220,15 +223,16 @@ public class PantallaJuego extends Template {
                     pad.setEscudo(Paddle.DFLT_ESCUDO);
                 }
             }
-
-            if (ball.checkCollision(enemigo)){
-                enemigo.movimientoDaño(batch);
-                enemigo.setVida(enemigo.getVida() - 1);
-                if (enemigo.getVida() < 0) {
-                    actualizarMatrizPosiciones(enemigo.getSprite().getX());
-                    listaEnemigos.removeIndex(i);
-                    puntaje += 1;
-                }
+            for(PingBall ball:balls) {
+	            if (ball.checkCollision(enemigo)){
+	                enemigo.movimientoDaño(batch);
+	                enemigo.setVida(enemigo.getVida() - 1);
+	                if (enemigo.getVida() < 0) {
+	                    actualizarMatrizPosiciones(enemigo.getSprite().getX());
+	                    listaEnemigos.removeIndex(i);
+	                    puntaje += 1;
+	                }
+	            }
             }
         }
     }
