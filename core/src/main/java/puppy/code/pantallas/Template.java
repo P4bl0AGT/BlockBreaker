@@ -9,12 +9,10 @@ public abstract class Template implements Screen{
 		dibujar();
 		actualizar();
 		finalizar();
-
 	}
 
 	protected abstract void iniciar();
 	protected abstract void dibujar();
 	protected abstract void actualizar();
 	protected abstract void finalizar();
-
 }

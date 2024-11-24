@@ -13,7 +13,6 @@ import puppy.code.blocks.GoodBlock;
 import puppy.code.blocks.NormalBlock;
 import puppy.code.objetos.Paddle;
 import puppy.code.pantallas.PantallaGameOver;
-import puppy.code.pantallas.PantallaJuego;
 import puppy.code.pantallas.PantallaNivelSuperado;
 import puppy.code.pantallas.PantallaPausa;
 import puppy.code.objetos.PingBall;
@@ -48,14 +47,15 @@ public class GameLogic{
         //dibujar textos
         p.getFont().draw(p.getBatch(), "Puntos: " + p.getPuntaje(), 10, 25);
         p.getFont().draw(p.getBatch(), "Vidas : " + p.getVidas(), 210, 25);
+        p.getFont().draw(p.getBatch(), "Escudo : " + p.getEscudo(), 210, 50);
         p.getFont().draw(p.getBatch(), "Nivel : " + p.getNivel(), 410, 25);
         p.getFont().draw(p.getBatch(), "HighScore : " + p.getGame().getHighScore(), 610, 25);
 
         p.getFont().setColor((p.getContPad() != 0) ? Color.LIME: Color.WHITE);
-        p.getFont().draw(p.getBatch(), "TimeP : " + (10 - p.getContPad() / 60), 850, 25);
+        p.getFont().draw(p.getBatch(), "Paddle : " + (10 - p.getContPad() / 60), 850, 25);
 
         p.getFont().setColor((p.getContBall() != 0) ? Color.LIME: Color.WHITE);
-        p.getFont().draw(p.getBatch(), "TimeB : " + (10 - p.getContBall() / 60), 1050, 25);
+        p.getFont().draw(p.getBatch(), "Ball : " + (10 - p.getContBall() / 60), 1050, 25);
 
         p.getFont().setColor(Color.WHITE);
         p.getBatch().end();
@@ -65,7 +65,7 @@ public class GameLogic{
         blocks.clear();
         int blockWidth = 140; //70
         int blockHeight = 40; //26
-        int y = Gdx.graphics.getHeight();
+        int y = Gdx.graphics.getHeight() - 74;
         Random random = new Random();
 
         for (int cont = 0; cont < filas; cont++) {

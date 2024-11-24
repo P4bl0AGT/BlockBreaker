@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import puppy.code.torretas.Enemy;
 
 public class Paddle implements Sprite {
     /* = = = = = = = = = = = = ATRIBUTOS  = = = = = = = = = = = = = */
@@ -16,6 +17,9 @@ public class Paddle implements Sprite {
     private boolean effectSizeIncrease = false;
     private boolean effectSizeDecreases = false;
 
+    private int escudo;
+    public static final int DFLT_ESCUDO = 5;
+
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public Paddle(int x, int y, int ancho, int alto) {
@@ -23,10 +27,12 @@ public class Paddle implements Sprite {
         this.y = y;
         width = ancho;
         height = alto;
+        escudo = DFLT_ESCUDO;
     }
 
 
     /* = = = = = = = = = = = = SET-GET = = = = = = = = = = = = = */
+
     public int getX() {
         return x;
     }
@@ -92,6 +98,9 @@ public class Paddle implements Sprite {
     }
 
 
+    public int getEscudo() {return escudo;}
+    public void setEscudo(int escudo) {this.escudo = escudo;}
+
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
     public void dibujar(ShapeRenderer shape) {
         shape.setColor(Color.BLUE);
@@ -109,5 +118,7 @@ public class Paddle implements Sprite {
             x = x2;
         }
     }
+
+
 
 }

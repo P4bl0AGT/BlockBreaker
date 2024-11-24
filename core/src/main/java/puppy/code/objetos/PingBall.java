@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.audio.Sound;
 import puppy.code.blocks.BlockDefinitive;
+import puppy.code.torretas.Enemy;
+import puppy.code.torretas.Bullet;
 
 import java.util.Random;
 
@@ -181,6 +183,36 @@ public class PingBall implements Sprite {
         boolean intersectaX = (bb.getX() + bb.getWidth() >= x - size) && (bb.getX() <= x + size);
         boolean intersectaY = (bb.getY() + bb.getHeight() >= y - size) && (bb.getY() <= y + size);
         return intersectaX && intersectaY;
+    }
+
+
+    public boolean checkCollision(Enemy ee){
+        if (collidesWith(ee)) {
+            ySpeed = -ySpeed;
+            color = Color.GREEN;
+            System.out.println("choque");
+            return true;
+        }
+        else {
+            color = Color.WHITE;
+            return false;
+        }
+
+    }
+
+    private boolean collidesWith(Enemy ee){
+        float xEnemigo = ee.getSprite().getX();
+        float yEnemigo = ee.getSprite().getY();
+        float sizeEnemigo = ee.getSprite().getHeight();
+
+        float xPelota = this.x;
+        float yPelota = this.y;
+        float sizePelota = this.size;
+
+        boolean colisionX = (xPelota + sizePelota >= xEnemigo) && (xPelota - sizePelota <= xEnemigo + sizeEnemigo);
+        boolean colisionY = (yPelota + sizePelota >= yEnemigo) && (yPelota - sizePelota <= yEnemigo + sizeEnemigo);
+
+        return colisionX && colisionY;
     }
 
 }

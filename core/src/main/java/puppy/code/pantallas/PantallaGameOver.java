@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import puppy.code.principal.BlockBreakerGame;
+import puppy.code.principal.PantallaJuego;
 
 
 public class PantallaGameOver extends Template {

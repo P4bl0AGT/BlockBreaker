@@ -1,6 +1,8 @@
-package puppy.code.pantallas;
+package puppy.code.principal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 //import java.util.Random;
 
 
@@ -13,11 +15,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.utils.Array;
 import puppy.code.blocks.BlockDefinitive;
-import puppy.code.principal.BlockBreakerGame;
-import puppy.code.principal.GameLogic;
+import puppy.code.pantallas.PantallaPausa;
+import puppy.code.pantallas.Template;
 import puppy.code.objetos.Paddle;
 import puppy.code.objetos.PingBall;
+import puppy.code.torretas.Director;
+import puppy.code.torretas.Enemy;
+import puppy.code.torretas.EnemyBuilder;
+import puppy.code.torretas.EnemyType;
 
 
 public class PantallaJuego extends Template {
@@ -43,13 +51,21 @@ public class PantallaJuego extends Template {
 
     private GameLogic gameLogic;
 
+    private Array<Enemy> listaEnemigos;
+    private Director director;
+    private EnemyBuilder builder;
+
+    private int[][] matrizEnemigos = {
+        {0, 0, 0, 0, 0, 0, 0, 0},  // Ocupado
+        {5, 155, 305, 455, 605, 755, 905, 1055}      // PosX
+    };
 
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     public PantallaJuego(int nivel, int puntaje, int vidas) {
         this.game = BlockBreakerGame.getInstancia();
         this.nivel = nivel;
         this.puntaje = puntaje;
-        this.vidas = vidas; //Hay que cambiarlo al paddle ¿?
+        this.vidas = vidas;
         gameLogic = new GameLogic(this);
 
         camera = new OrthographicCamera();
@@ -75,7 +91,9 @@ public class PantallaJuego extends Template {
         background = new Texture(Gdx.files.internal("temp.jpg"));
         backgroundY = 0;
 
-
+        listaEnemigos = new Array<>();
+        director = new Director();
+        builder = new EnemyBuilder();
     }
 
 
@@ -100,6 +118,8 @@ public class PantallaJuego extends Template {
     public void setContPad(int contPad) {this.contPad = contPad;}
     public void setPad(Paddle pad) {this.pad = pad;}
 
+    public int getEscudo(){return pad.getEscudo();}
+
 
     /* = = = = = = = = = = = = METODOS = = = = = = = = = = = = = */
 
@@ -113,21 +133,37 @@ public class PantallaJuego extends Template {
     protected void dibujar() {
         batch.draw(background, 0, backgroundY, BlockBreakerGame.DFLT_ANCHO_PANTALLA, 4*BlockBreakerGame.DFLT_ALTO_PANTALLA);
         batch.end();
+
         pad.dibujar(shape);
         ball.dibujar(shape);
         gameLogic.dibujarTextos();
+
+
+        batch.begin();
+        for (int i = 0; i < listaEnemigos.size; i++){
+            listaEnemigos.get(i).getSprite().draw(game.getBatch());
+            listaEnemigos.get(i).dibujarBalas(game.getBatch());
+        }
+        batch.end();
+
     }
 
     protected void actualizar() {
-        //movimiento fondo
-        backgroundY -= 2;
-        // Si el fondo salio
-        if (backgroundY <= -background.getWidth()-1100) {
-            backgroundY = 0;
-        }
+        //Mover fondo
+        this.moverFondo();
 
-    	pad.actualizar();
+        //Crear enemigo con patron Builder
+        this.crearEnemigo();
+
+        //Comprobar colisiones torreta-ball paddle-bala
+        this.comprobarColisionesTorretasMisiles();
+
+        //Actualizar posicion pad
+        pad.actualizar();
+
+        //Comprobar colision pelota-pad
         ball.checkCollision(pad);
+
         // monitorear inicio del juego
         gameLogic.monitorStartup();
         //Monitorear pausa
@@ -150,6 +186,88 @@ public class PantallaJuego extends Template {
 
     protected void finalizar() {
     	shape.end();
+    }
+
+    public int obtenerPosicionValida(){
+        Random rand = new Random();
+        int aux;
+
+        while(true) {
+            aux = rand.nextInt(8);
+            if (matrizEnemigos[0][aux] == 0) {
+                matrizEnemigos[0][aux] = 1;
+                return aux;
+            }
+        }
+    }
+
+    public void moverFondo(){
+        backgroundY -= 2;
+        if (backgroundY <= -background.getWidth()-1100) {
+            backgroundY = 0;
+        }
+    }
+
+    public void comprobarColisionesTorretasMisiles(){
+        for (int i = listaEnemigos.size - 1; i >= 0; i--){
+            Enemy enemigo = listaEnemigos.get(i);
+            enemigo.actualizarBalas();
+
+            if (enemigo.checkCollisionBullet(pad)){
+                pad.setEscudo(pad.getEscudo() - enemigo.getBalaEnemy().getGolpe());
+                if (pad.getEscudo() < 0) {
+                    vidas--;
+                    pad.setEscudo(Paddle.DFLT_ESCUDO);
+                }
+            }
+
+            if (ball.checkCollision(enemigo)){
+                enemigo.movimientoDaño(batch);
+                enemigo.setVida(enemigo.getVida() - 1);
+                if (enemigo.getVida() < 0) {
+                    actualizarMatrizPosiciones(enemigo.getSprite().getX());
+                    listaEnemigos.removeIndex(i);
+                    puntaje += 1;
+                }
+            }
+        }
+    }
+
+    public void actualizarMatrizPosiciones(float x){
+        for (int i = 0; i < 8; i++){
+            if (matrizEnemigos[1][i] == x){
+                matrizEnemigos[0][i] = 0;
+                return;
+            }
+        }
+    }
+
+    public void crearEnemigo(){
+        if ((listaEnemigos.size <= nivel - 1) && (listaEnemigos.size <= BlockBreakerGame.DFLT_MAX_ENEM)) {
+            int aux = obtenerPosicionValida();
+
+            Random rand = new Random();
+            int tipo = rand.nextInt(3);
+
+            if (tipo == 0) {
+                director.createEnemy1(builder);
+                Enemy enemigo1 = builder.getEnemy();
+                enemigo1.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
+                listaEnemigos.add(enemigo1);
+            }
+            else if (tipo == 1) {
+                director.createEnemy2(builder);
+                Enemy enemigo2 = builder.getEnemy();
+                enemigo2.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
+                listaEnemigos.add(enemigo2);
+            }
+            else if (tipo == 2) {
+                director.createEnemy3(builder);
+                Enemy enemigo3 = builder.getEnemy();
+                enemigo3.getSprite().setPosition(matrizEnemigos[1][aux], Enemy.DFLT_POS_Y);
+                listaEnemigos.add(enemigo3);
+            }
+        }
     }
 
     @Override
@@ -181,6 +299,14 @@ public class PantallaJuego extends Template {
     @Override
     public void hide() {
         // TODO Auto-generated method stub
+    }
+
+    public int[][] getMatrizEnemigos() {
+        return matrizEnemigos;
+    }
+
+    public void setMatrizEnemigos(int[][] matrizEnemigos) {
+        this.matrizEnemigos = matrizEnemigos;
     }
 }
 

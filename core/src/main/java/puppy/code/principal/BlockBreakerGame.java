@@ -28,6 +28,8 @@ public class BlockBreakerGame extends Game {
     public static final int DFLT_ANCHO_PANTALLA = 1200;
     public static final int DFLT_ALTO_PANTALLA = 800;
 
+    public final static int DFLT_MAX_ENEM = 4;
+
     /* = = = = = = = = = = = = CONSTRUCTOR  = = = = = = = = = = = = = */
     private BlockBreakerGame() {
     }
