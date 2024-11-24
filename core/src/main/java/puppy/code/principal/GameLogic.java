@@ -199,7 +199,7 @@ public class GameLogic{
 	            if (p.getContBall() >= 600) {
 	                ball.getCurrentStrategy().remove(balls);
 	                p.setContBall(0);
-	                ball.setHasEffect(false); // Desactivar el efecto
+	                ball.setHasEffect(false); 
 	                ball.setStrategy(null);
 	            }
 	        }

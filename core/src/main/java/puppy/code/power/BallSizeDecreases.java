@@ -22,8 +22,10 @@ public class BallSizeDecreases implements BallStrategy {
     public void remove(ArrayList<PingBall> balls) {
         for (PingBall ball : balls) {
 	            ball.setSize(15);             
-	            ball.setHasEffect(false);    
-	            ball.setEffectSizeDecreases(false); 
+        }
+        for(PingBall ball:balls) {
+	        ball.setHasEffect(false);    
+	        ball.setEffectSizeDecreases(false); 
         }
     }
 }
