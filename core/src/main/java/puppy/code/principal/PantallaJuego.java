@@ -109,13 +109,16 @@ public class PantallaJuego extends Template {
     public OrthographicCamera getCamera() {return camera;}
     public SpriteBatch getBatch() {return batch;}
     public BitmapFont getFont() {return font;}
+    public int getBackgroundY() {return backgroundY;}
+    public Texture getBackground() {return background;}
 
     public void setVidas(int vidas) {this.vidas = vidas;}
-    public void setBall(PingBall ball) {this.aux = aux;}
+    public void setBall(PingBall ball) {this.aux = ball;}
     public void setPuntaje(int puntaje) {this.puntaje = puntaje;}
     public void setContBall(int contBall) {this.contBall = contBall;}
     public void setContPad(int contPad) {this.contPad = contPad;}
     public void setPad(Paddle pad) {this.pad = pad;}
+    public void setBackgroundY(int backgroundY) {this.backgroundY = backgroundY;}
 
     public int getEscudo(){return pad.getEscudo();}
 
@@ -148,22 +151,20 @@ public class PantallaJuego extends Template {
     protected void actualizar() {
 
         //Mover fondo
-        this.moverFondo();
+        gameLogic.moverFondo();
 
         //Crear enemigo con patron Builder
-        this.crearEnemigo();
+        crearEnemigo();
 
         //Comprobar colisiones torreta-ball paddle-bala
-        this.comprobarColisionesTorretasMisiles();
+        gameLogic.comprobarColisionesTorretasMisiles(listaEnemigos, balls, matrizEnemigos);
 
         //Actualizar posicion pad
         pad.actualizar();
 
         //Comprobar colision pelota-pad
-        for(PingBall ball:balls) {
-    		ball.checkCollision(pad);
-    	}
-
+        gameLogic.verifyColissionPaddleBall(balls);
+        
         // monitorear inicio del juego
         gameLogic.monitorStartup(balls);
         //Monitorear pausa
@@ -188,64 +189,9 @@ public class PantallaJuego extends Template {
     	shape.end();
     }
 
-    public int obtenerPosicionValida(){
-        Random rand = new Random();
-        int aux;
-
-        while(true) {
-            aux = rand.nextInt(8);
-            if (matrizEnemigos[0][aux] == 0) {
-                matrizEnemigos[0][aux] = 1;
-                return aux;
-            }
-        }
-    }
-
-    public void moverFondo(){
-        backgroundY -= 1;
-        if (backgroundY <= -background.getWidth()-1100) {
-            backgroundY = 0;
-        }
-    }
-
-    public void comprobarColisionesTorretasMisiles(){
-        for (int i = listaEnemigos.size - 1; i >= 0; i--){
-            Enemy enemigo = listaEnemigos.get(i);
-            enemigo.actualizarBalas();
-
-            if (enemigo.checkCollisionBullet(pad)){
-                pad.setEscudo(pad.getEscudo() - enemigo.getBalaEnemy().getGolpe());
-                if (pad.getEscudo() < 0) {
-                    vidas--;
-                    pad.setEscudo(Paddle.DFLT_ESCUDO);
-                }
-            }
-            for(PingBall ball:balls) {
-	            if (ball.checkCollision(enemigo)){
-	                enemigo.movimientoDaño(batch);
-	                enemigo.setVida(enemigo.getVida() - 1);
-	                if (enemigo.getVida() < 0) {
-	                    actualizarMatrizPosiciones(enemigo.getSprite().getX());
-	                    listaEnemigos.removeIndex(i);
-	                    puntaje += 1;
-	                }
-	            }
-            }
-        }
-    }
-
-    public void actualizarMatrizPosiciones(float x){
-        for (int i = 0; i < 8; i++){
-            if (matrizEnemigos[1][i] == x){
-                matrizEnemigos[0][i] = 0;
-                return;
-            }
-        }
-    }
-
     public void crearEnemigo(){
         if ((listaEnemigos.size <= nivel - 1) && (listaEnemigos.size <= BlockBreakerGame.DFLT_MAX_ENEM)) {
-            int aux = obtenerPosicionValida();
+            int aux = gameLogic.obtenerPosicionValida(matrizEnemigos);
 
             Random rand = new Random();
             int tipo = rand.nextInt(3);

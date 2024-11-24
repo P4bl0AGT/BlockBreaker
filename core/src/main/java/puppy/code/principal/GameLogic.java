@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
+
 import puppy.code.blocks.BadBlock;
 import puppy.code.blocks.BlockDefinitive;
 import puppy.code.blocks.GoodBlock;
@@ -18,6 +20,7 @@ import puppy.code.pantallas.PantallaNivelSuperado;
 import puppy.code.pantallas.PantallaPausa;
 import puppy.code.objetos.PingBall;
 import puppy.code.power.*;
+import puppy.code.torretas.Enemy;
 
 
 public class GameLogic{
@@ -234,5 +237,67 @@ public class GameLogic{
             }
         }
     }
+    
+    public void moverFondo(){
+    	p.setBackgroundY(p.getBackgroundY() - 1);
+        if (p.getBackgroundY() <= - p.getBackground().getWidth()-1100) {
+        	p.setBackgroundY(0);
+        }
+    }
+    
+    public int obtenerPosicionValida(int[][] matrizEnemigos){
+    	Random rand = new Random();
+        int aux;
+
+        while(true) {
+            aux = rand.nextInt(8);
+            if (matrizEnemigos[0][aux] == 0) {
+            	matrizEnemigos[0][aux] = 1;
+                return aux;
+            }
+        }
+    }
+    
+    public void actualizarMatrizPosiciones(float x, int[][] matrizEnemigos){
+        for (int i = 0; i < 8; i++){
+            if (matrizEnemigos[1][i] == x){
+                matrizEnemigos[0][i] = 0;
+                return;
+            }
+        }
+    }
+    
+    public void comprobarColisionesTorretasMisiles(Array<Enemy> listaEnemigos, ArrayList<PingBall> balls, int[][] matrizEnemigos){
+        for (int i = listaEnemigos.size - 1; i >= 0; i--){
+            Enemy enemigo = listaEnemigos.get(i);
+            enemigo.actualizarBalas();
+
+            if (enemigo.checkCollisionBullet(p.getPad())){
+            	p.getPad().setEscudo(p.getPad().getEscudo() - enemigo.getBalaEnemy().getGolpe());
+                if (p.getPad().getEscudo() < 0) {
+                    p.setVidas(p.getVidas() - 1);
+                    p.getPad().setEscudo(Paddle.DFLT_ESCUDO);
+                }
+            }
+            for(PingBall ball:balls) {
+	            if (ball.checkCollision(enemigo)){
+	                enemigo.movimientoDaño(p.getBatch());
+	                enemigo.setVida(enemigo.getVida() - 1);
+	                if (enemigo.getVida() < 0) {
+	                    actualizarMatrizPosiciones(enemigo.getSprite().getX(), matrizEnemigos);
+	                    listaEnemigos.removeIndex(i);
+	                    p.setPuntaje(p.getPuntaje()+1);
+	                }
+	            }
+            }
+        }
+    }
+    
+    public void verifyColissionPaddleBall(ArrayList<PingBall> balls) {
+    	for(PingBall ball:balls) {
+    		ball.checkCollision(p.getPad());
+    	}
+    }
+    
 
 }
