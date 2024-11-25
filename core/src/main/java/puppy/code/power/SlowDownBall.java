@@ -23,8 +23,10 @@ public class SlowDownBall implements BallStrategy {
 	    	for(PingBall ball:balls) {
 			    	ball.setxSpeed(ball.getxSpeed() * 2);
 					ball.setySpeed(ball.getySpeed() * 2);
-					ball.setHasEffect(false);
-					ball.setEffectSlowDownBall(false);
+	    	}
+	    	for (PingBall ball:balls) {
+				ball.setHasEffect(false);
+				ball.setEffectSlowDownBall(false);
 		    }
 	    }
 
